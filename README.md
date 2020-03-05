@@ -16,3 +16,14 @@ $ cat cities.json | jtbl
 ```
 
 `jtbl` expects a JSON array of JSON objects or JSON lines.
+
+It can be useful to JSONify command line output with `jc`, filter through `jq`, and present in `jtbl`:
+```
+$ jc ifconfig | jq -c '.[] | {name, type, ipv4_addr, ipv4_mask}'| jtbl 
+name     type            ipv4_addr       ipv4_mask
+-------  --------------  --------------  -------------
+docker0  Ethernet        172.17.0.1      255.255.0.0
+ens33    Ethernet        192.168.71.146  255.255.255.0
+lo       Local Loopback  127.0.0.1       255.0.0.0
+```
+> Notice the `-c` flag used in `jq` to produce valid JSON lines output for `jtbl` consumption.
