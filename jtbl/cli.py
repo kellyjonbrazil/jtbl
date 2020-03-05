@@ -10,12 +10,23 @@ def main():
             print('missing piped data')
             sys.exit(1)
 
-    data = json.loads(sys.stdin.read())
+    pipe_data = sys.stdin.read()
 
-    # auto 'slurp' data if it is not already a list of dictionaries
-    if type(data) is not list:
+    try:
+        data = json.loads(pipe_data)
+        if type(data) is not list:
+            data_list = []
+            data_list.append(data)
+            data = data_list
+
+    except Exception:
+        # if json.loads fails, assume the data is formatted as json lines and parse
+        data = pipe_data.splitlines()
         data_list = []
-        data_list.append(data)
+        for jsonline in data:
+            entry = json.loads(jsonline)
+            data_list.append(entry)
+
         data = data_list
 
     # wrap every 17 chars for all field values
