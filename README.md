@@ -63,7 +63,7 @@ $ <JSON Source> | jtbl
 
 `jtbl` can also work with [JSON Lines](http://jsonlines.org/) format with similar features.
 
-**JSON Lines Example***
+**JSON Lines Example**
 ```
 {"name": "docker0", type": "Ethernet", "ipv4_addr": "172.17.0.1", "ipv4_mask": "255.255.0.0"}
 {"name": "ens33", "type": "Ethernet", "ipv4_addr": "192.168.71.146", "ipv4_mask": "255.255.255.0"}
