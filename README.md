@@ -30,7 +30,7 @@ lo       Local Loopback  127.0.0.1       255.0.0.0
 
 ## Installation
 ```
-pip3 install jtbl
+pip3 install --upgrade jtbl
 ```
 ### Usage
 Just pipe JSON data to `jtbl`. (e.g. cat a JSON file, `jc`, `jq`, etc.)
