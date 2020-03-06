@@ -26,7 +26,7 @@ docker0  Ethernet        172.17.0.1      255.255.0.0
 ens33    Ethernet        192.168.71.146  255.255.255.0
 lo       Local Loopback  127.0.0.1       255.0.0.0
 ```
-> Notice the `-c` flag used in `jq` to produce valid JSON lines output for `jtbl` consumption.
+> Notice the `-c` flag used in `jq` to produce valid [JSON Lines](http://jsonlines.org/) output for `jtbl` consumption.
 
 ## Installation
 ```
