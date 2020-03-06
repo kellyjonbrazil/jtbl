@@ -15,7 +15,7 @@ $ cat cities.json | jtbl
     49      52      48  N         97       9       0  W     Winnipeg           MB
 ```
 
-`jtbl` expects a JSON array of JSON objects or JSON lines.
+`jtbl` expects a JSON array of JSON objects or [JSON Lines](http://jsonlines.org/).
 
 It can be useful to JSONify command line output with `jc`, filter through `jq`, and present in `jtbl`:
 ```
