@@ -132,27 +132,7 @@ $ jc dig www.cnn.com | jtbl
                                                                                                                                turner-tls.map.fa
                                                                                                                                stly.net.', 'clas
                                                                                                                                s': 'IN', 'type':
-                                                                                                                                'A', 'ttl': 13,
-                                                                                                                               'data': '151.101.
-                                                                                                                               129.67'}, {'name'
-                                                                                                                               : 'turner-tls.map
-                                                                                                                               .fastly.net.', 'c
-                                                                                                                               lass': 'IN', 'typ
-                                                                                                                               e': 'A', 'ttl': 1
-                                                                                                                               3, 'data': '151.1
-                                                                                                                               01.65.67'}, {'nam
-                                                                                                                               e': 'turner-tls.m
-                                                                                                                               ap.fastly.net.',
-                                                                                                                               'class': 'IN', 't
-                                                                                                                               ype': 'A', 'ttl':
-                                                                                                                                13, 'data': '151
-                                                                                                                               .101.1.67'}, {'na
-                                                                                                                               me': 'turner-tls.
-                                                                                                                               map.fastly.net.',
-                                                                                                                                'class': 'IN', '
-                                                                                                                               type': 'A', 'ttl'
-                                                                                                                               : 13, 'data': '15
-                                                                                                                               1.101.193.67'}]
+                                                                                                                               ...
 ```
 
 To get to the data you are interested in you can use a JSON filter like `jq` do dive deeper.
