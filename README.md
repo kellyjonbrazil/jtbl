@@ -153,7 +153,7 @@ $ jc dig www.cnn.com | jq '.[].answer'
     "class": "IN",
     "type": "A",
     "ttl": 20,
-    "data": "151.101.197.67"
+    "data": "151.101.1.67"
   }
   ...
 ]
