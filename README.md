@@ -27,3 +27,13 @@ ens33    Ethernet        192.168.71.146  255.255.255.0
 lo       Local Loopback  127.0.0.1       255.0.0.0
 ```
 > Notice the `-c` flag used in `jq` to produce valid JSON lines output for `jtbl` consumption.
+
+## Installation
+```
+pip3 install jtbl
+```
+### Usage
+Just pipe JSON data to jtbl. (e.g. cat a JSON file, `jc`, `jq`, etc.)
+```
+$ <JSON Source> | jtbl
+```
