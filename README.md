@@ -113,25 +113,7 @@ username         shell
 root             /bin/bash
 bin              /sbin/nologin
 daemon           /sbin/nologin
-adm              /sbin/nologin
-lp               /sbin/nologin
-sync             /bin/sync
-shutdown         /sbin/shutdown
-halt             /sbin/halt
-mail             /sbin/nologin
-operator         /sbin/nologin
-games            /sbin/nologin
-ftp              /sbin/nologin
-nobody           /sbin/nologin
-systemd-network  /sbin/nologin
-dbus             /sbin/nologin
-polkitd          /sbin/nologin
-sshd             /sbin/nologin
-postfix          /sbin/nologin
-chrony           /sbin/nologin
-kbrazil          /bin/bash
-dockerroot       /sbin/nologin
-ntp              /sbin/nologin
+...
 ```
 
 ## Working with Deeper JSON Structures
