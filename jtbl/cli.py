@@ -3,9 +3,14 @@
 import sys
 import json
 import tabulate
+import shutil
 
 
 def main():
+    columns = shutil.get_terminal_size().columns
+
+    # padding between columns is 4 characters
+
     if sys.stdin.isatty():
             print('missing piped data')
             sys.exit(1)
@@ -24,8 +29,13 @@ def main():
         data = pipe_data.splitlines()
         data_list = []
         for jsonline in data:
-            entry = json.loads(jsonline)
-            data_list.append(entry)
+            try:
+                entry = json.loads(jsonline)
+                data_list.append(entry)
+            except Exception as e:
+                # can't parse the data. Throw a nice message and quit
+                print(f'jtbl:  Exception - {e}\n       Can not parse the following line:\n       {jsonline}\n       Not JSON or JSON Lines data.')
+                sys.exit(1)
 
         data = data_list
 
