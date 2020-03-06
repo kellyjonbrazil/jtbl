@@ -155,6 +155,7 @@ $ jc dig www.cnn.com | jq '.[].answer'
     "ttl": 20,
     "data": "151.101.197.67"
   }
+  ...
 ]
 ```
 This will produce the following table in `jtbl`
