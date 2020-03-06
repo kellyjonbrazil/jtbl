@@ -34,7 +34,7 @@ def main():
                 data_list.append(entry)
             except Exception as e:
                 # can't parse the data. Throw a nice message and quit
-                print(f'jtbl:  Exception - {e}\n       Can not parse the following line:\n       {jsonline}\n       Not JSON or JSON Lines data.')
+                print(f'jtbl:  Exception - {e}\n       Can not parse the following line:\n       {jsonline}\n       Not JSON or JSON Lines data.', file=sys.stderr)
                 sys.exit(1)
 
         data = data_list
