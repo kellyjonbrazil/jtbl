@@ -1,0 +1,4 @@
+jtbl changelog
+
+20200306 v0.1.2
+- Nicer error messages on parse errors

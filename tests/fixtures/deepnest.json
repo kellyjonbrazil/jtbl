@@ -1,0 +1,14 @@
+{
+    "this": {
+        "is": {
+            "a": {
+                "deeply": {
+                    "nested": {
+                        "structure": "value1",
+                        "item2": "value2"
+                    }
+                }
+            }
+        }
+    }
+}
