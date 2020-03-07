@@ -174,4 +174,4 @@ turner-tls.map.fa  IN       A          17  151.101.129.67
 stly.net.
 ```
 ## Column Width
-Today `jtbl` will always wrap each column at 17 characters. In the future, `jtbl` will be smarter and only wrap when necessary and  also provide the option to truncate vs. wrap lines. Stay tuned!
+`jtbl` will attempt to shrink columns to a sane size if it detects the output is wider than the terminal width. It's not perfect and will be improved.

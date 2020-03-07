@@ -1,4 +1,7 @@
 jtbl changelog
 
+20200306 v0.1.3
+- Added rudimentary auto scaler (can be improved)
+
 20200306 v0.1.2
 - Nicer error messages on parse errors
