@@ -119,20 +119,24 @@ daemon           /sbin/nologin
 ## Working with Deeper JSON Structures
 `jtbl` will happily dump deeply nested JSON structures into a table, but usually this is not what you are looking for.
 ```
-$ jc dig www.cnn.com | jtbl 
-   id  opcode    status    flags                query_num    answer_num    authority_num    additional_num  question           answer               query_time    server  when                 rcvd
------  --------  --------  -----------------  -----------  ------------  ---------------  ----------------  -----------------  -----------------  ------------  --------  -----------------  ------
-25618  QUERY     NOERROR   ['qr', 'rd', 'ra'            1             5                0                 1  {'name': 'www.cnn  [{'name': 'www.cn            34      2600  Fri Mar 06 07:25:     143
-                           ]                                                                                .com.', 'class':   n.com.', 'class':                          23 PST 2020
-                                                                                                            'IN', 'type': 'A'   'IN', 'type': 'C
-                                                                                                            }                  NAME', 'ttl': 264
-                                                                                                                               , 'data': 'turner
-                                                                                                                               -tls.map.fastly.n
-                                                                                                                               et.'}, {'name': '
-                                                                                                                               turner-tls.map.fa
-                                                                                                                               stly.net.', 'clas
-                                                                                                                               s': 'IN', 'type':
-                                                                                                                               ...
+$ jc dig www.cnn.com | jtbl
++-------+----------+----------+--------------+-------------+--------------+-----------------+------------------+--------------+--------------+--------------+----------+--------------+--------+
+|    id | opcode   | status   | flags        |   query_num |   answer_num |   authority_num |   additional_num | question     | answer       |   query_time |   server | when         |   rcvd |
++=======+==========+==========+==============+=============+==============+=================+==================+==============+==============+==============+==========+==============+========+
+| 28791 | QUERY    | NOERROR  | ['qr', 'rd', |           1 |            5 |               0 |                1 | {'name': 'ww | [{'name': 'w |           32 |     2600 | Fri Mar 06 1 |    143 |
+|       |          |          |  'ra']       |             |              |                 |                  | w.cnn.com.', | ww.cnn.com.' |              |          | 7:15:25 PST  |        |
+|       |          |          |              |             |              |                 |                  |  'class': 'I | , 'class': ' |              |          | 2020         |        |
+|       |          |          |              |             |              |                 |                  | N', 'type':  | IN', 'type': |              |          |              |        |
+|       |          |          |              |             |              |                 |                  | 'A'}         |  'CNAME', 't |              |          |              |        |
+|       |          |          |              |             |              |                 |                  |              | tl': 251, 'd |              |          |              |        |
+|       |          |          |              |             |              |                 |                  |              | ata': 'turne |              |          |              |        |
+|       |          |          |              |             |              |                 |                  |              | r-tls.map.fa |              |          |              |        |
+|       |          |          |              |             |              |                 |                  |              | stly.net.'}, |              |          |              |        |
+|       |          |          |              |             |              |                 |                  |              |  {'name': 't |              |          |              |        |
+|       |          |          |              |             |              |                 |                  |              | urner-tls.ma |              |          |              |        |
+|       |          |          |              |             |              |                 |                  |              | p.fastly.net |              |          |              |        |
+|       |          |          |              |             |              |                 |                  |              | ...          |              |          |              |        |
++-------+----------+----------+--------------+-------------+--------------+-----------------+------------------+--------------+--------------+--------------+----------+--------------+--------+                                                                                                         ...
 ```
 
 To get to the data you are interested in you can use a JSON filter like `jq` do dive deeper.
@@ -160,18 +164,14 @@ $ jc dig www.cnn.com | jq '.[].answer'
 ```
 This will produce the following table in `jtbl`
 ```
-name               class    type      ttl  data
------------------  -------  ------  -----  -----------------
-www.cnn.com.       IN       CNAME      72  turner-tls.map.fa
-                                           stly.net.
-turner-tls.map.fa  IN       A          17  151.101.1.67
-stly.net.
-turner-tls.map.fa  IN       A          17  151.101.193.67
-stly.net.
-turner-tls.map.fa  IN       A          17  151.101.65.67
-stly.net.
-turner-tls.map.fa  IN       A          17  151.101.129.67
-stly.net.
+name                        class    type      ttl  data
+--------------------------  -------  ------  -----  --------------------------
+www.cnn.com.                IN       CNAME      11  turner-tls.map.fastly.net.
+turner-tls.map.fastly.net.  IN       A          23  151.101.129.67
+turner-tls.map.fastly.net.  IN       A          23  151.101.1.67
+turner-tls.map.fastly.net.  IN       A          23  151.101.65.67
+turner-tls.map.fastly.net.  IN       A          23  151.101.193.67
+
 ```
 ## Column Width
 `jtbl` will attempt to shrink columns to a sane size if it detects the output is wider than the terminal width. It's not perfect and will be improved.
