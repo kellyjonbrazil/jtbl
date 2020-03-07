@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200307 v0.1.4
+- Slight improvement to auto scaler
+
 20200306 v0.1.3
 - Added rudimentary auto scaler (can be improved)
 

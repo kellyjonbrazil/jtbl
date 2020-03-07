@@ -50,9 +50,12 @@ def main():
 
     # header_width and value_width calculations are only approximate since there can be left and right justification
     num_of_headers = len(data_width.keys())
-    header_width = len('    '.join(data_width.keys()))
-    value_width = sum(data_width.values()) + ((num_of_headers - 1) * 3)
-    total_width = max(header_width, value_width)
+    combined_total_list = []
+    for k, v in data_width.items():
+        highest_value = max(len(k) + 4, v)
+        combined_total_list.append(highest_value)
+
+    total_width = sum(combined_total_list) + 4
 
     if total_width > columns:
         table_format = 'grid'
