@@ -96,7 +96,7 @@ $ cat /etc/passwd | jc --passwd | jq '[.[] | {username, shell}]'
 *(Notice the square brackets around the filter)*
 
 ### `jq` Slurp Method
-The following example uses `jq` to filter and then again to 'slurp' the filtered elements into a proper JSON array.
+The following example uses `jq` to filter and 'slurp' the filtered elements into a proper JSON array.
 ```
 $ cat /etc/passwd | jc --passwd | jq '.[] | {username, shell}' | jq -s
 [
