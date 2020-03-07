@@ -72,7 +72,7 @@ $ <JSON Source> | jtbl
 ## Filtering the JSON Input
 If there are too many elements, or the data in the elements are too large, the table may not fit in the terminal screen. In this case you can use a JSON filter like `jq` to send `jtbl` only the elements you are interested in:
 
-###`jq` Array Method
+### `jq` Array Method
 The following example uses `jq` to filter and format the filtered elements into a proper JSON array.
 ```
 $ cat /etc/passwd | jc --passwd | jq '[.[] | {username, shell}]'
@@ -94,7 +94,7 @@ $ cat /etc/passwd | jc --passwd | jq '[.[] | {username, shell}]'
 ```
 (Notice the square brackets around the filter)
 
-###`jq` Slurp Method
+### `jq` Slurp Method
 The following example uses `jq` to filter and then again to 'slurp' the filtered elements into a proper JSON array.
 ```
 $ cat /etc/passwd | jc --passwd | jq '.[] | {username, shell}' | jq -s
@@ -116,7 +116,7 @@ $ cat /etc/passwd | jc --passwd | jq '.[] | {username, shell}' | jq -s
 ```
 (Notice the `jq -s` at the end)
 
-###`jq` JSON Lines Method
+### `jq` JSON Lines Method
 Or you can use the `-c` option in `jq` to send the data compact, which will effectively be JSON Lines format, which `jtbl` can understand:
 ```
 $ cat /etc/passwd | jc --passwd | jq -c '.[] | {username, shell}'
@@ -160,9 +160,8 @@ $ jc dig www.cnn.com | jtbl
 +-------+----------+----------+--------------+-------------+--------------+-----------------+------------------+--------------+--------------+--------------+----------+--------------+--------+
 ```
 
+## Diving Deeper into the JSON with `jq`
 To get to the data you are interested in you can use a JSON filter like `jq` do dive deeper.
-
-**Diving Deeper into the JSON with `jq`**
 ```
 $ jc dig www.cnn.com | jq '.[].answer' 
 [
@@ -183,6 +182,7 @@ $ jc dig www.cnn.com | jq '.[].answer'
   ...
 ]
 ```
+
 This will produce the following table in `jtbl`
 ```
 name                        class    type      ttl  data
@@ -194,5 +194,6 @@ turner-tls.map.fastly.net.  IN       A          23  151.101.65.67
 turner-tls.map.fastly.net.  IN       A          23  151.101.193.67
 
 ```
+
 ## Column Width
 `jtbl` will attempt to shrink columns to a sane size if it detects the output is wider than the terminal width. It's not perfect and will be improved.
