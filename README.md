@@ -67,6 +67,7 @@ $ <JSON Source> | jtbl
 {"name": "docker0", type": "Ethernet", "ipv4_addr": "172.17.0.1", "ipv4_mask": "255.255.0.0"}
 {"name": "ens33", "type": "Ethernet", "ipv4_addr": "192.168.71.146", "ipv4_mask": "255.255.255.0"}
 {"name": "lo", "type": "Local Loopback", "ipv4_addr": "127.0.0.1", "ipv4_mask": "255.0.0.0"}
+...
 ```
 
 ## Filtering the JSON Input
@@ -92,7 +93,7 @@ $ cat /etc/passwd | jc --passwd | jq '[.[] | {username, shell}]'
   ...
 ]
 ```
-(Notice the square brackets around the filter)
+*(Notice the square brackets around the filter)*
 
 ### `jq` Slurp Method
 The following example uses `jq` to filter and then again to 'slurp' the filtered elements into a proper JSON array.
@@ -114,10 +115,10 @@ $ cat /etc/passwd | jc --passwd | jq '.[] | {username, shell}' | jq -s
   ...
 ]
 ```
-(Notice the `jq -s` at the end)
+*(Notice the `jq -s` at the end)*
 
 ### `jq` JSON Lines Method
-Or you can use the `-c` option in `jq` to send the data compact, which will effectively be JSON Lines format, which `jtbl` can understand:
+The following example will send the data in JSON Lines format, which `jtbl` can understand:
 ```
 $ cat /etc/passwd | jc --passwd | jq -c '.[] | {username, shell}'
 {"username":"root","shell":"/bin/bash"}
@@ -125,9 +126,9 @@ $ cat /etc/passwd | jc --passwd | jq -c '.[] | {username, shell}'
 {"username":"daemon","shell":"/sbin/nologin"}
 ...
 ```
-(Notice the `-c` option being used)
+*(Notice the `-c` option being used)*
 
-When piping either of these to `jtbl` you get the following result:
+When piping any of these to `jtbl` you get the following result:
 ```
 username         shell
 ---------------  --------------
