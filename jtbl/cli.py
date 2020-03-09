@@ -99,7 +99,7 @@ def main():
         sorted_list = sorted(combined_total_list, reverse=True)
         wrap_width = sorted_list[0]
 
-        while wrap_width > 4 and total_width >= (columns - (num_of_headers * 4)):
+        while wrap_width > 4 and total_width >= (columns - (num_of_headers * 7)):
             sorted_list = sorted(sorted_list, reverse=True)
             print(sorted_list)
             sorted_list[0] -= 1
@@ -145,7 +145,7 @@ def main():
 
             print('add_keys', add_keys)
             for i in add_keys:
-                entry[0] = i[1]
+                entry[i[0]] = i[1]
         # for i in reverse(delete_keys)
         #    print('delete_keys', i)
         #    for k in 
