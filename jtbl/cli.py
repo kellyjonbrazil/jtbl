@@ -6,7 +6,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '0.1.6'
+__version__ = '0.1.7'
 
 
 def ctrlc(signum, frame):
@@ -71,12 +71,17 @@ def main():
     # find the length of the keys (headers) and longest values
     data_width = {}
     for entry in data:
-        for k, v in entry.items():
-            if k in data_width:
-                if len(str(v)) > data_width[k]:
+        try:
+            for k, v in entry.items():
+                if k in data_width:
+                    if len(str(v)) > data_width[k]:
+                        data_width[k] = len(str(v))
+                else:
                     data_width[k] = len(str(v))
-            else:
-                data_width[k] = len(str(v))
+        except AttributeError:
+            # can't parse the data. Throw a nice message and quit
+                print(f'jtbl:  Can not represent this part of the JSON Object (Could be an Array instead of an Object):\n       {entry[0:74]}\n', file=sys.stderr)
+                sys.exit(1)
 
     # highest_value calculations are only approximate since there can be left and right justification
     num_of_headers = len(data_width.keys())

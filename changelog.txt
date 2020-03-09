@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200308 v0.1.7
+- Catch exception when the user passes an Array with no objects
+
 20200308 v0.1.6
 - Fix dict error when iterating and changing size
 
