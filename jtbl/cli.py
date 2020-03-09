@@ -6,7 +6,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '0.5.0'
+__version__ = '0.5.1'
 
 
 def ctrlc(signum, frame):
@@ -115,21 +115,23 @@ def main():
             delete_keys = []
             add_keys = []
             for k, v in entry.items():
-                if v is not None:
-                    if truncate:
-                        new_key = str(k)[0:wrap_width]
-                        new_value = str(v)[0:wrap_width]
-                        if k != new_key or v != new_value:
-                            delete_keys.append(k)
-                            add_keys.append((new_key, new_value))
+                if not v:
+                    v = ''
 
-                    else:
-                        table_format = 'grid'
-                        new_key = '\n'.join([str(k)[i:i + wrap_width] for i in range(0, len(str(k)), wrap_width)])
-                        new_value = '\n'.join([str(v)[i:i + wrap_width] for i in range(0, len(str(v)), wrap_width)])
-                        if k != new_key or v != new_value:
-                            delete_keys.append(k)
-                            add_keys.append((new_key, new_value))
+                if truncate:
+                    new_key = str(k)[0:wrap_width]
+                    new_value = str(v)[0:wrap_width]
+                    if k != new_key or v != new_value:
+                        delete_keys.append(k)
+                        add_keys.append((new_key, new_value))
+
+                else:
+                    table_format = 'grid'
+                    new_key = '\n'.join([str(k)[i:i + wrap_width] for i in range(0, len(str(k)), wrap_width)])
+                    new_value = '\n'.join([str(v)[i:i + wrap_width] for i in range(0, len(str(v)), wrap_width)])
+                    if k != new_key or v != new_value:
+                        delete_keys.append(k)
+                        add_keys.append((new_key, new_value))
 
             for i in delete_keys:
                 del entry[i]
