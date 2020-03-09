@@ -93,7 +93,7 @@ def main():
 
         # truncate or wrap every wrap_width chars for all field values
         for entry in data:
-            for k, v in entry.items():
+            for k, v in list(entry.items()):
                 if v is not None:
                     if truncate:
                         new_key = str(k)[0:wrap_width]
