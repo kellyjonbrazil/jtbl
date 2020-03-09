@@ -78,10 +78,13 @@ def main():
                         data_width[k] = len(str(v))
                 else:
                     data_width[k] = len(str(v))
-        except AttributeError:
+        except Exception:
             # can't parse the data. Throw a nice message and quit
-                print(f'jtbl:  Can not represent this part of the JSON Object (Could be an Array instead of an Object):\n       {entry[0:74]}\n', file=sys.stderr)
-                sys.exit(1)
+            if not entry:
+                entry = '<null data>'
+
+            print(f'jtbl:  Can not represent this part of the JSON Object.\n       (Could be an Array or null data instead of an Object):\n       {entry[0:74]}\n', file=sys.stderr)
+            sys.exit(1)
 
     # highest_value calculations are only approximate since there can be left and right justification
     num_of_headers = len(data_width.keys())
