@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200308 v0.1.6
+- Fix dict error when iterating and changing size
+
 20200308 v0.1.5
 - Add version info
 - Add help
