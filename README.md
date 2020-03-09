@@ -202,4 +202,4 @@ turner-tls.map.fastly.net.  IN       A          23  151.101.193.67
 ```
 
 ## Column Width
-`jtbl` will attempt to shrink columns to a sane size if it detects the output is wider than the terminal width. It's not perfect and will be improved.
+`jtbl` will attempt to shrink columns to a sane size if it detects the output is wider than the terminal width. You can use the `-t` option to truncate the rows instead of wrapping when the terminal width is too small for all of the data.

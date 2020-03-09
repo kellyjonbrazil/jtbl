@@ -1,5 +1,10 @@
 jtbl changelog
 
+20200309 v0.5.0
+- Improved auto scaling
+- Improved error handling
+- Fixed a bug where some data was being corrupted during autoscale wrapping
+
 20200308 v0.1.7
 - Catch exception when the user passes an Array with no objects
 
@@ -11,6 +16,7 @@ jtbl changelog
 - Add help
 - Add truncate option
 - More scaler improvements
+- Gracefully handle CTRL-C interrupt
 
 20200307 v0.1.4
 - Slight improvement to auto scaler
