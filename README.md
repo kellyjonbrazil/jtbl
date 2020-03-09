@@ -34,8 +34,13 @@ pip3 install --upgrade jtbl
 ## Usage
 Just pipe JSON data to `jtbl`. (e.g. `cat` a JSON file, `jc`, `jq`, `aws` cli, `kubectl`, etc.)
 ```
-$ <JSON Source> | jtbl
+$ <JSON Data> | jtbl [OPTIONS]
 ```
+### Options
+- `-t` truncate data instead of wrapping if too long for the terminal width
+- `-v` prints version information
+- `-h` prints help information
+
 ## Compatible JSON Formats
 `jtbl` works best with a shallow array of JSON objects. Each object should have a few elements that will be turned into table columns. Fortunately, this is how many APIs present their data.
 

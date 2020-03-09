@@ -6,6 +6,8 @@ import json
 import tabulate
 import shutil
 
+__version__ = '0.1.5'
+
 
 def ctrlc(signum, frame):
     """exit with error on SIGINT"""
@@ -23,7 +25,17 @@ def main():
         if opt.startswith('-') and not opt.startswith('--'):
             options.extend(opt[1:])
 
+    version_info = 'v' in options
+    helpme = 'h' in options
     truncate = 't' in options
+
+    if version_info:
+        print(f'jtbl:   version {__version__}\n')
+        exit()
+
+    if helpme:
+        print('jtbl:   Converts JSON and JSON Lines to a table\n\nUsage:  <JSON Data> | jtbl [OPTIONS]\n\n        -t  truncate data instead of wrapping if too long for the terminal width\n        -v  version info\n        -h  help\n')
+        exit()
 
     table_format = 'simple'
     columns = shutil.get_terminal_size().columns
