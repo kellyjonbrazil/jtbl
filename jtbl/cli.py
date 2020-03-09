@@ -87,29 +87,68 @@ def main():
     num_of_headers = len(data_width.keys())
     combined_total_list = []
     for k, v in data_width.items():
-        highest_value = max(len(k) + 5, v + 2)
+        highest_value = max(len(k) + 4, v + 2)
         combined_total_list.append(highest_value)
 
-    total_width = sum(combined_total_list) + 6
+    print(combined_total_list)
+    total_width = sum(combined_total_list)
+    print('total_width', total_width, 'columns', columns)
 
     if total_width > columns:
-        scale = columns / total_width
-        wrap_width = max(int(columns / num_of_headers * scale), 4)
+        # Find the best wrap_width based on the terminal size
+        sorted_list = sorted(combined_total_list, reverse=True)
+        wrap_width = sorted_list[0]
+
+        while wrap_width > 4 and total_width >= (columns - (num_of_headers * 4)):
+            sorted_list = sorted(sorted_list, reverse=True)
+            print(sorted_list)
+            sorted_list[0] -= 1
+            total_width = sum(sorted_list)
+            wrap_width = sorted_list[0]
+            print('wrap_width', wrap_width, 'total_width', total_width, 'columns', columns)
+
+        print('wrap_width', wrap_width, 'total_width', total_width, 'columns', columns)
+
+        # scale = columns / total_width
+        # wrap_width = max(int(columns / num_of_headers * scale), 4)
 
         # truncate or wrap every wrap_width chars for all field values
         for entry in data:
-            for k, v in list(entry.items()):
+            delete_keys = []
+            add_keys = []
+            for k, v in entry.items():
                 if v is not None:
                     if truncate:
                         new_key = str(k)[0:wrap_width]
-                        entry[new_key] = entry.pop(k)
-                        entry[new_key] = str(v)[0:wrap_width]
+                        new_value = str(v)[0:wrap_width]
+                        if k != new_key or v != new_value:
+                            print("wrapped", k, v, 'to', new_key, new_value)
+                            # entry[new_key] = entry[k]
+                            # entry[new_key] = new_value
+                            delete_keys.append(k)
+                            add_keys.append((new_key, new_value))
 
                     else:
                         table_format = 'grid'
                         new_key = '\n'.join([str(k)[i:i + wrap_width] for i in range(0, len(str(k)), wrap_width)])
-                        entry[new_key] = entry.pop(k)
-                        entry[new_key] = '\n'.join([str(v)[i:i + wrap_width] for i in range(0, len(str(v)), wrap_width)])
+                        new_value = '\n'.join([str(v)[i:i + wrap_width] for i in range(0, len(str(v)), wrap_width)])
+                        if k != new_key or v != new_value:
+                            print("wrapped", k, v, 'to', new_key, new_value)
+                            # entry[new_key] = entry[k]
+                            # entry[new_key] = new_value
+                            delete_keys.append(k)
+                            add_keys.append((new_key, new_value))
+
+            print('delete_keys', delete_keys)
+            for i in delete_keys:
+                del entry[i]
+
+            print('add_keys', add_keys)
+            for i in add_keys:
+                entry[0] = i[1]
+        # for i in reverse(delete_keys)
+        #    print('delete_keys', i)
+        #    for k in 
 
     print(tabulate.tabulate(data, headers='keys', tablefmt=table_format))
 
