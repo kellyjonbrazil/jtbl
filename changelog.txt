@@ -1,5 +1,11 @@
 jtbl changelog
 
+20200308 v0.1.5
+- Add version info
+- Add help
+- Add truncate option
+- More scaler improvements
+
 20200307 v0.1.4
 - Slight improvement to auto scaler
 
