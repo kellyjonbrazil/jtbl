@@ -99,10 +99,7 @@ def main():
         # Find the best wrap_width based on the terminal size
         sorted_list = sorted(combined_total_list, reverse=True)
         wrap_width = sorted_list[0]
-
-        scale = 4.5
-        if truncate:
-            scale = 2
+        scale = 2.5 if truncate else 4.5
 
         while wrap_width > 4 and total_width >= (columns - (num_of_headers * scale)):
             sorted_list = sorted(sorted_list, reverse=True)
