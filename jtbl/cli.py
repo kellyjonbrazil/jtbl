@@ -57,13 +57,13 @@ def main():
         # if json.loads fails, assume the data is formatted as json lines and parse
         data = pipe_data.splitlines()
         data_list = []
-        for jsonline in data:
+        for i, jsonline in enumerate(data):
             try:
                 entry = json.loads(jsonline)
                 data_list.append(entry)
             except Exception as e:
                 # can't parse the data. Throw a nice message and quit
-                print(f'jtbl:  Exception - {e}\n       Cannot parse the following line (Not JSON or JSON Lines data):\n       {jsonline[0:74]}\n', file=sys.stderr)
+                print(f'jtbl:  Exception - {e}\n       Cannot parse line {i + 1} (Not JSON or JSON Lines data):\n       {jsonline[0:74]}\n', file=sys.stderr)
                 sys.exit(1)
 
         data = data_list
