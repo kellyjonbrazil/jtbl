@@ -167,7 +167,7 @@ $ jc dig www.cnn.com | jtbl
 ```
 
 ## Diving Deeper into the JSON with `jq`
-To get to the data you are interested in you can use a JSON filter like `jq` do dive deeper.
+To get to the data you are interested in you can use a JSON filter like `jq` to dive deeper.
 ```
 $ jc dig www.cnn.com | jq '.[].answer' 
 [
