@@ -63,7 +63,7 @@ def main():
                 data_list.append(entry)
             except Exception as e:
                 # can't parse the data. Throw a nice message and quit
-                print(f'jtbl:  Exception - {e}\n       Cannot parse line {i + 1} (Not JSON or JSON Lines data):\n       {jsonline[0:74]}\n', file=sys.stderr)
+                print(f'jtbl:  Exception - {e}\n       Cannot parse line {i + 1} (Not JSON or JSON Lines data):\n       {jsonline[0:columns - 8]}\n', file=sys.stderr)
                 sys.exit(1)
 
         data = data_list
@@ -83,7 +83,7 @@ def main():
             if not entry:
                 entry = '<Null>'
 
-            print(f'jtbl:  Cannot represent this part of the JSON Object as a table.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {entry[0:74]}\n', file=sys.stderr)
+            print(f'jtbl:  Cannot represent this part of the JSON Object as a table.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {entry[0:columns - 8]}\n', file=sys.stderr)
             sys.exit(1)
 
     # highest_value calculations are only approximate since there can be left and right justification
