@@ -83,7 +83,7 @@ def main():
             if not entry:
                 entry = '<Null>'
 
-            print(f'jtbl:  Can not represent this part of the JSON Object.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {entry[0:74]}\n', file=sys.stderr)
+            print(f'jtbl:  Cannot represent this part of the JSON Object as a table.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {entry[0:74]}\n', file=sys.stderr)
             sys.exit(1)
 
     # highest_value calculations are only approximate since there can be left and right justification
