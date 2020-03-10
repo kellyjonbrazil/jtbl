@@ -1,5 +1,9 @@
 jtbl changelog
 
+20200310 v0.5.2
+- Scale value tweak
+- Error message update
+
 20200309 v0.5.1
 - Wrap or truncate row headers with no values
 
