@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200311 v0.5.3
+- Improve error messages
+
 20200310 v0.5.2
 - Scale value tweak
 - Error message update
