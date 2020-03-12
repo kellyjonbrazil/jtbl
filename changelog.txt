@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200311 v0.5.4
+- Fix to display False values
+
 20200311 v0.5.3
 - Improve error messages
 
