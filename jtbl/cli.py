@@ -112,7 +112,7 @@ def main():
             delete_keys = []
             add_keys = []
             for k, v in entry.items():
-                if not v:
+                if v is None:
                     v = ''
 
                 if truncate:
