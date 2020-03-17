@@ -37,6 +37,7 @@ Just pipe JSON data to `jtbl`. (e.g. `cat` a JSON file, `jc`, `jq`, `aws` cli, `
 $ <JSON Data> | jtbl [OPTIONS]
 ```
 ### Options
+- `-n` no data wrapping if too long for the terminal width
 - `-t` truncate data instead of wrapping if too long for the terminal width
 - `-v` prints version information
 - `-h` prints help information
@@ -202,4 +203,4 @@ turner-tls.map.fastly.net.  IN       A          23  151.101.193.67
 ```
 
 ## Column Width
-`jtbl` will attempt to shrink columns to a sane size if it detects the output is wider than the terminal width. You can use the `-t` option to truncate the rows instead of wrapping when the terminal width is too small for all of the data.
+`jtbl` will attempt to shrink columns to a sane size if it detects the output is wider than the terminal width. You can use the `-t` option to truncate the rows instead of wrapping when the terminal width is too small for all of the data. The `-n` option disables wrapping.

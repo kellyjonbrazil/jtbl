@@ -1,5 +1,10 @@
 jtbl changelog
 
+20200317 v1.0.0
+- Add nowrap option
+- Refactored wrap into a function
+- Improved error messages
+
 20200311 v0.5.4
 - Fix to display False values
 
