@@ -37,7 +37,8 @@ Just pipe JSON data to `jtbl`. (e.g. `cat` a JSON file, `jc`, `jq`, `aws` cli, `
 $ <JSON Data> | jtbl [OPTIONS]
 ```
 ### Options
-- `-n` no data wrapping if too long for the terminal width
+- `--cols=n` manually configure the terminal width
+- `-n` no data wrapping if too long for the terminal width (overrides `--cols`)
 - `-t` truncate data instead of wrapping if too long for the terminal width
 - `-v` prints version information
 - `-h` prints help information
