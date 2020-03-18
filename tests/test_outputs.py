@@ -13,6 +13,15 @@ class MyTests(unittest.TestCase):
 
         self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
 
+    def test_null_data(self):
+        stdin = ''
+        expected = textwrap.dedent('''\
+        jtbl:  Cannot parse the data (Not JSON or JSON Lines data):
+               []
+        ''')
+
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
+
     def test_simple_key_value(self):
         stdin = '[{"key": "value"}]'
         expected = textwrap.dedent('''\
