@@ -15,6 +15,7 @@ def ctrlc(signum, frame):
 
 
 def get_stdin():
+    """return STDIN data"""
     if sys.stdin.isatty():
         return None
 
@@ -22,6 +23,7 @@ def get_stdin():
 
 
 def print_error(message):
+    """print error messages to STDERR and quit with error code"""
     print(message, file=sys.stderr)
     sys.exit(1)
 
@@ -93,6 +95,11 @@ def wrap(data, columns, table_format, truncate):
 
 
 def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
+    """
+    returns a tuple of (error, result)
+        error (boolean)     True if an error message is being returned, otherwise False
+        result (string)     text string of the table result or error message
+    """
     if columns is None:
         columns = shutil.get_terminal_size().columns
 
