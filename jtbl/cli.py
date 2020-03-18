@@ -2,11 +2,12 @@
 
 import sys
 import signal
+import textwrap
 import json
 import tabulate
 import shutil
 
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def ctrlc(signum, frame):
@@ -20,6 +21,19 @@ def get_stdin():
         return None
 
     return sys.stdin.read()
+
+def helptext():
+    print_error(textwrap.dedent('''\
+            jtbl:   Converts JSON and JSON Lines to a table
+                                       
+            Usage:  <JSON Data> | jtbl [OPTIONS]
+
+                    --cols=n   manually configure the terminal width
+                    -n         do not try to wrap if too long for the terminal width        
+                    -t         truncate data instead of wrapping if too long for the terminal width
+                    -v         version info
+                    -h         help
+    '''))
 
 
 def print_error(message):
@@ -127,18 +141,29 @@ def make_table(input_data=None,
                 data_list.append(entry)
             except Exception as e:
                 # can't parse the data. Throw a nice message and quit
-                return (False, f'jtbl:  Exception - {e}\n       Cannot parse line {i + 1} (Not JSON or JSON Lines data):\n       {str(jsonline)[0:columns - 8]}\n')
+                return (False, textwrap.dedent(f'''\
+                    jtbl:  Exception - {e}
+                           Cannot parse line {i + 1} (Not JSON or JSON Lines data):
+                           {str(jsonline)[0:columns - 8]}
+                           '''))
 
         data = data_list
 
     try:
         if not isinstance(data[0], dict):
             data = json.dumps(data)
-            return (False, f'jtbl:  Cannot represent this part of the JSON Object as a table.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {str(data)[0:columns - 8]}\n')
+            return (False, textwrap.dedent(f'''\
+                jtbl:  Cannot represent this part of the JSON Object as a table.
+                       (Could be an Element, an Array, or Null data instead of an Object):
+                       {str(data)[0:columns - 8]}
+                       '''))
 
     except Exception:
         # can't parse the data. Throw a nice message and quit
-        return (False, f'jtbl:  Cannot parse the data (Not JSON or JSON Lines data):\n       {str(data)[0:columns - 8]}\n')
+        return (False, textwrap.dedent(f'''\
+            jtbl:  Cannot parse the data (Not JSON or JSON Lines data):
+                   {str(data)[0:columns - 8]}
+                   '''))
 
     if not nowrap:
         data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
@@ -153,22 +178,34 @@ def main():
     stdin = get_stdin()
 
     options = []
+    long_options = {}
     for arg in sys.argv:
         if arg.startswith('-') and not arg.startswith('--'):
             options.extend(arg[1:])
+
+        if arg.startswith('--'):
+            try:
+                k, v = arg[2:].split('=')
+                long_options[k] = int(v)
+            except:
+                helptext()
 
     nowrap = 'n' in options
     truncate = 't' in options
     version_info = 'v' in options
     helpme = 'h' in options
 
+    columns = None
+    if 'cols' in long_options:
+        columns = long_options['cols']
+
     if version_info:
         print_error(f'jtbl:   version {__version__}\n')
 
     if helpme:
-        print_error('jtbl:   Converts JSON and JSON Lines to a table\n\nUsage:  <JSON Data> | jtbl [OPTIONS]\n\n        -n  do not try to wrap if too long for the terminal width\n        -t  truncate data instead of wrapping if too long for the terminal width\n        -v  version info\n        -h  help\n')
+        helptext()
 
-    success, result = make_table(input_data=stdin, truncate=truncate, nowrap=nowrap)
+    success, result = make_table(input_data=stdin, truncate=truncate, nowrap=nowrap, columns=columns)
 
     if success:
         print(result)
