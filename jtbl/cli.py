@@ -94,39 +94,24 @@ def wrap(data, columns, table_format, truncate):
     return (data, table_format)
 
 
-def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
+def make_table(input_data=None,
+               truncate=False,
+               nowrap=False,
+               columns=None,
+               table_format='simple'):
     """
     returns a tuple of (success, result)
         success (boolean)   True if no error, False if error encountered
         result (string)     text string of the table result or error message
     """
+    if input_data is None:
+        return (False, 'jtbl:   Missing piped data\n')
+
     if columns is None:
         columns = shutil.get_terminal_size().columns
 
-    # break on ctrl-c keyboard interrupt
-    signal.signal(signal.SIGINT, ctrlc)
-
-    options = []
-    for arg in args:
-        if arg.startswith('-') and not arg.startswith('--'):
-            options.extend(arg[1:])
-
-    nowrap = 'n' in options
-    truncate = 't' in options
-    version_info = 'v' in options
-    helpme = 'h' in options
-
-    if version_info:
-        return (True, f'jtbl:   version {__version__}\n')
-
-    if helpme:
-        return (True, 'jtbl:   Converts JSON and JSON Lines to a table\n\nUsage:  <JSON Data> | jtbl [OPTIONS]\n\n        -n  do not try to wrap if too long for the terminal width\n        -t  truncate data instead of wrapping if too long for the terminal width\n        -v  version info\n        -h  help\n')
-
-    if pipe_data is None:
-        return (False, 'jtbl:   Missing piped data\n')
-
     try:
-        data = json.loads(pipe_data)
+        data = json.loads(input_data)
         if type(data) is not list:
             data_list = []
             data_list.append(data)
@@ -134,7 +119,7 @@ def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
 
     except Exception:
         # if json.loads fails, assume the data is formatted as json lines and parse
-        data = pipe_data.splitlines()
+        data = input_data.splitlines()
         data_list = []
         for i, jsonline in enumerate(data):
             try:
@@ -162,8 +147,28 @@ def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
 
 
 def main():
+    # break on ctrl-c keyboard interrupt
+    signal.signal(signal.SIGINT, ctrlc)
+
     stdin = get_stdin()
-    success, result = make_table(pipe_data=stdin, args=sys.argv)
+
+    options = []
+    for arg in sys.argv:
+        if arg.startswith('-') and not arg.startswith('--'):
+            options.extend(arg[1:])
+
+    nowrap = 'n' in options
+    truncate = 't' in options
+    version_info = 'v' in options
+    helpme = 'h' in options
+
+    if version_info:
+        print_error(f'jtbl:   version {__version__}\n')
+
+    if helpme:
+        print_error('jtbl:   Converts JSON and JSON Lines to a table\n\nUsage:  <JSON Data> | jtbl [OPTIONS]\n\n        -n  do not try to wrap if too long for the terminal width\n        -t  truncate data instead of wrapping if too long for the terminal width\n        -v  version info\n        -h  help\n')
+
+    success, result = make_table(input_data=stdin, truncate=truncate, nowrap=nowrap)
 
     if success:
         print(result)
