@@ -187,7 +187,7 @@ def main():
             try:
                 k, v = arg[2:].split('=')
                 long_options[k] = int(v)
-            except:
+            except Exception:
                 helptext()
 
     nowrap = 'n' in options
