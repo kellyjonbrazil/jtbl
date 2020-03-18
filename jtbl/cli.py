@@ -96,8 +96,8 @@ def wrap(data, columns, table_format, truncate):
 
 def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
     """
-    returns a tuple of (error, result)
-        success (boolean)   True if no error
+    returns a tuple of (success, result)
+        success (boolean)   True if no error, False if error encountered
         result (string)     text string of the table result or error message
     """
     if columns is None:
