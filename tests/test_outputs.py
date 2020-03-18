@@ -11,7 +11,7 @@ class MyTests(unittest.TestCase):
         jtbl:   Missing piped data
         ''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
 
     def test_null_data(self):
         stdin = ''
@@ -20,7 +20,7 @@ class MyTests(unittest.TestCase):
                []
         ''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
 
     def test_simple_key_value(self):
         stdin = '[{"key": "value"}]'
@@ -29,7 +29,7 @@ class MyTests(unittest.TestCase):
         -----
         value''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
 
     def test_multi_key_value(self):
         stdin = '[{"key1": "value1", "key2": "value1"}, {"key1": "value2", "key2": "value2"}]'
@@ -39,7 +39,7 @@ class MyTests(unittest.TestCase):
         value1  value1
         value2  value2''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
 
     def test_null_string(self):
         stdin = 'null'
@@ -49,7 +49,7 @@ class MyTests(unittest.TestCase):
                [null]
         ''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
 
     def test_hello_string(self):
         stdin = 'hello'
@@ -59,7 +59,7 @@ class MyTests(unittest.TestCase):
                hello
         ''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
 
     def test_array_input(self):
         stdin = '["value1", "value2", "value3"]'
@@ -69,7 +69,7 @@ class MyTests(unittest.TestCase):
                ["value1", "value2", "value3"]
         ''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
 
     def test_deep_nest(self):
         stdin = '{"this":{"is":{"a":{"deeply":{"nested":{"structure":"value1","item2":"value2"}}}}}}'
@@ -78,7 +78,7 @@ class MyTests(unittest.TestCase):
         ---------------------------------------------------------------------------------
         {'is': {'a': {'deeply': {'nested': {'structure': 'value1', 'item2': 'value2'}}}}}''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
 
     def test_jc_dig(self):
         stdin = '[{"id": 55658, "opcode": "QUERY", "status": "NOERROR", "flags": ["qr", "rd", "ra"], "query_num": 1, "answer_num": 5, "authority_num": 0, "additional_num": 1, "question": {"name": "www.cnn.com.", "class": "IN", "type": "A"}, "answer": [{"name": "www.cnn.com.", "class": "IN", "type": "CNAME", "ttl": 147, "data": "turner-tls.map.fastly.net."}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.1.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.65.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.129.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.193.67"}], "query_time": 44, "server": "2600", "when": "Wed Mar 18 12:20:59 PDT 2020", "rcvd": 143}]'
@@ -222,7 +222,7 @@ class MyTests(unittest.TestCase):
         |      |        |        |        |        |        |        |        |        | ]      |        |        |        |        |
         +------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, columns=80), (False, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, columns=80), (True, expected))
 
     def test_jc_dig_150cols(self):
         stdin = '[{"id": 55658, "opcode": "QUERY", "status": "NOERROR", "flags": ["qr", "rd", "ra"], "query_num": 1, "answer_num": 5, "authority_num": 0, "additional_num": 1, "question": {"name": "www.cnn.com.", "class": "IN", "type": "A"}, "answer": [{"name": "www.cnn.com.", "class": "IN", "type": "CNAME", "ttl": 147, "data": "turner-tls.map.fastly.net."}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.1.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.65.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.129.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.193.67"}], "query_time": 44, "server": "2600", "when": "Wed Mar 18 12:20:59 PDT 2020", "rcvd": 143}]'
@@ -321,7 +321,7 @@ class MyTests(unittest.TestCase):
         |          |          |       |          |         |          |          |          |          |          | 67'}]    |          |        |        |
         +----------+----------+-------+----------+---------+----------+----------+----------+----------+----------+----------+----------+--------+--------+''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, columns=150), (False, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, columns=150), (True, expected))
 
     def test_jc_dig_150cols_t(self):
         stdin = '[{"id": 55658, "opcode": "QUERY", "status": "NOERROR", "flags": ["qr", "rd", "ra"], "query_num": 1, "answer_num": 5, "authority_num": 0, "additional_num": 1, "question": {"name": "www.cnn.com.", "class": "IN", "type": "A"}, "answer": [{"name": "www.cnn.com.", "class": "IN", "type": "CNAME", "ttl": 147, "data": "turner-tls.map.fastly.net."}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.1.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.65.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.129.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.193.67"}], "query_time": 44, "server": "2600", "when": "Wed Mar 18 12:20:59 PDT 2020", "rcvd": 143}]'
@@ -330,7 +330,7 @@ class MyTests(unittest.TestCase):
         --------  --------  --------  -----  --------  ----------  ----------  ----------  ----------  ----------  --------  ----------  -------  ------
         QUERY     NOERROR       2600  55658  ['qr', '           1           5           0           1  {'name':    [{'name'          44  Wed Mar     143''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, args=['-t'], columns=150), (False, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, args=['-t'], columns=150), (True, expected))
 
     def test_jc_dig_nowrap(self):
         stdin = '[{"id": 55658, "opcode": "QUERY", "status": "NOERROR", "flags": ["qr", "rd", "ra"], "query_num": 1, "answer_num": 5, "authority_num": 0, "additional_num": 1, "question": {"name": "www.cnn.com.", "class": "IN", "type": "A"}, "answer": [{"name": "www.cnn.com.", "class": "IN", "type": "CNAME", "ttl": 147, "data": "turner-tls.map.fastly.net."}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.1.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.65.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.129.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.193.67"}], "query_time": 44, "server": "2600", "when": "Wed Mar 18 12:20:59 PDT 2020", "rcvd": 143}]'
@@ -339,7 +339,7 @@ class MyTests(unittest.TestCase):
         -----  --------  --------  ------------------  -----------  ------------  ---------------  ----------------  ----------------------------------------------------  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  ------------  --------  ----------------------------  ------
         55658  QUERY     NOERROR   ['qr', 'rd', 'ra']            1             5                0                 1  {'name': 'www.cnn.com.', 'class': 'IN', 'type': 'A'}  [{'name': 'www.cnn.com.', 'class': 'IN', 'type': 'CNAME', 'ttl': 147, 'data': 'turner-tls.map.fastly.net.'}, {'name': 'turner-tls.map.fastly.net.', 'class': 'IN', 'type': 'A', 'ttl': 5, 'data': '151.101.1.67'}, {'name': 'turner-tls.map.fastly.net.', 'class': 'IN', 'type': 'A', 'ttl': 5, 'data': '151.101.65.67'}, {'name': 'turner-tls.map.fastly.net.', 'class': 'IN', 'type': 'A', 'ttl': 5, 'data': '151.101.129.67'}, {'name': 'turner-tls.map.fastly.net.', 'class': 'IN', 'type': 'A', 'ttl': 5, 'data': '151.101.193.67'}]            44      2600  Wed Mar 18 12:20:59 PDT 2020     143''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, args=['-n'], columns=150), (False, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, args=['-n'], columns=150), (True, expected))
 
     def test_jc_dig_answer(self):
         stdin = '[{"name":"www.cnn.com.","class":"IN","type":"CNAME","ttl":147,"data":"turner-tls.map.fastly.net."},{"name":"turner-tls.map.fastly.net.","class":"IN","type":"A","ttl":5,"data":"151.101.1.67"},{"name":"turner-tls.map.fastly.net.","class":"IN","type":"A","ttl":5,"data":"151.101.65.67"},{"name":"turner-tls.map.fastly.net.","class":"IN","type":"A","ttl":5,"data":"151.101.129.67"},{"name":"turner-tls.map.fastly.net.","class":"IN","type":"A","ttl":5,"data":"151.101.193.67"}]'
@@ -352,7 +352,7 @@ class MyTests(unittest.TestCase):
         turner-tls.map.fastly.net.  IN       A           5  151.101.129.67
         turner-tls.map.fastly.net.  IN       A           5  151.101.193.67''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, columns=80), (False, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, columns=80), (True, expected))
 
 
     def test_json_lines(self):
@@ -409,7 +409,7 @@ class MyTests(unittest.TestCase):
         vmnet1           192.168.101.1  255.255.255.0
         vmnet8           192.168.71.1   255.255.255.0''')
 
-        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
 
 
 if __name__ == '__main__':

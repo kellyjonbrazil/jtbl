@@ -97,7 +97,7 @@ def wrap(data, columns, table_format, truncate):
 def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
     """
     returns a tuple of (error, result)
-        error (boolean)     True if an error message is being returned, otherwise False
+        success (boolean)   True if no error
         result (string)     text string of the table result or error message
     """
     if columns is None:
@@ -117,13 +117,13 @@ def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
     helpme = 'h' in options
 
     if version_info:
-        return (False, f'jtbl:   version {__version__}\n')
+        return (True, f'jtbl:   version {__version__}\n')
 
     if helpme:
-        return (False, 'jtbl:   Converts JSON and JSON Lines to a table\n\nUsage:  <JSON Data> | jtbl [OPTIONS]\n\n        -n  do not try to wrap if too long for the terminal width\n        -t  truncate data instead of wrapping if too long for the terminal width\n        -v  version info\n        -h  help\n')
+        return (True, 'jtbl:   Converts JSON and JSON Lines to a table\n\nUsage:  <JSON Data> | jtbl [OPTIONS]\n\n        -n  do not try to wrap if too long for the terminal width\n        -t  truncate data instead of wrapping if too long for the terminal width\n        -v  version info\n        -h  help\n')
 
     if pipe_data is None:
-        return (True, 'jtbl:   Missing piped data\n')
+        return (False, 'jtbl:   Missing piped data\n')
 
     try:
         data = json.loads(pipe_data)
@@ -142,34 +142,34 @@ def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
                 data_list.append(entry)
             except Exception as e:
                 # can't parse the data. Throw a nice message and quit
-                return (True, f'jtbl:  Exception - {e}\n       Cannot parse line {i + 1} (Not JSON or JSON Lines data):\n       {str(jsonline)[0:columns - 8]}\n')
+                return (False, f'jtbl:  Exception - {e}\n       Cannot parse line {i + 1} (Not JSON or JSON Lines data):\n       {str(jsonline)[0:columns - 8]}\n')
 
         data = data_list
 
     try:
         if not isinstance(data[0], dict):
             data = json.dumps(data)
-            return (True, f'jtbl:  Cannot represent this part of the JSON Object as a table.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {str(data)[0:columns - 8]}\n')
+            return (False, f'jtbl:  Cannot represent this part of the JSON Object as a table.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {str(data)[0:columns - 8]}\n')
 
     except Exception:
         # can't parse the data. Throw a nice message and quit
-        return (True, f'jtbl:  Cannot parse the data (Not JSON or JSON Lines data):\n       {str(data)[0:columns - 8]}\n')
+        return (False, f'jtbl:  Cannot parse the data (Not JSON or JSON Lines data):\n       {str(data)[0:columns - 8]}\n')
 
     if not nowrap:
         data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
 
-    return (False, tabulate.tabulate(data, headers='keys', tablefmt=table_format))
+    return (True, tabulate.tabulate(data, headers='keys', tablefmt=table_format))
 
 
 def main():
-    error = False
+    success = False
     stdin = get_stdin()
     error, result = make_table(pipe_data=stdin, args=sys.argv)
 
-    if error:
-        print_error(result)
-    else:
+    if success:
         print(result)
+    else:
+        print_error(result)
 
 
 if __name__ == '__main__':
