@@ -13,6 +13,7 @@ def ctrlc(signum, frame):
     """exit with error on SIGINT"""
     sys.exit(1)
 
+
 def wrap(data, columns, table_format, truncate):
     """wrap or truncate the data to fit the terminal width"""
 
@@ -25,7 +26,7 @@ def wrap(data, columns, table_format, truncate):
                     data_width[k] = len(str(v))
             else:
                 data_width[k] = len(str(v))
-        
+
     # highest_value calculations are only approximate since there can be left and right justification
     num_of_headers = len(data_width.keys())
     combined_total_list = []
@@ -78,6 +79,7 @@ def wrap(data, columns, table_format, truncate):
 
     return (data, table_format)
 
+
 def main():
     # break on ctrl-c keyboard interrupt
     signal.signal(signal.SIGINT, ctrlc)
@@ -91,7 +93,7 @@ def main():
     truncate = 't' in options
     version_info = 'v' in options
     helpme = 'h' in options
-    
+
     if version_info:
         print(f'jtbl:   version {__version__}\n')
         exit()
@@ -143,7 +145,7 @@ def main():
 
     if not nowrap:
         data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
-        
+
     print(tabulate.tabulate(data, headers='keys', tablefmt=table_format))
 
 
