@@ -116,7 +116,7 @@ def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
         return (False, 'jtbl:   Converts JSON and JSON Lines to a table\n\nUsage:  <JSON Data> | jtbl [OPTIONS]\n\n        -n  do not try to wrap if too long for the terminal width\n        -t  truncate data instead of wrapping if too long for the terminal width\n        -v  version info\n        -h  help\n')
 
     if pipe_data is None:
-        return (True, 'jtbl:  Missing piped data\n')
+        return (True, 'jtbl:   Missing piped data\n')
 
     try:
         data = json.loads(pipe_data)
