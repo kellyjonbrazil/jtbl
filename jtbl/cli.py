@@ -14,6 +14,18 @@ def ctrlc(signum, frame):
     sys.exit(1)
 
 
+def get_stdin():
+    if sys.stdin.isatty():
+        return None
+
+    return sys.stdin.read()
+
+
+def print_error(message):
+    print(message, file=sys.stderr)
+    sys.exit(1)
+
+
 def wrap(data, columns, table_format, truncate):
     """wrap or truncate the data to fit the terminal width"""
 
@@ -80,12 +92,15 @@ def wrap(data, columns, table_format, truncate):
     return (data, table_format)
 
 
-def main():
+def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
+    if columns is None:
+        columns = shutil.get_terminal_size().columns
+
     # break on ctrl-c keyboard interrupt
     signal.signal(signal.SIGINT, ctrlc)
 
     options = []
-    for arg in sys.argv:
+    for arg in args:
         if arg.startswith('-') and not arg.startswith('--'):
             options.extend(arg[1:])
 
@@ -95,21 +110,13 @@ def main():
     helpme = 'h' in options
 
     if version_info:
-        print(f'jtbl:   version {__version__}\n')
-        exit()
+        return (False, f'jtbl:   version {__version__}\n')
 
     if helpme:
-        print('jtbl:   Converts JSON and JSON Lines to a table\n\nUsage:  <JSON Data> | jtbl [OPTIONS]\n\n        -n  do not try to wrap if too long for the terminal width\n        -t  truncate data instead of wrapping if too long for the terminal width\n        -v  version info\n        -h  help\n')
-        exit()
+        return (False, 'jtbl:   Converts JSON and JSON Lines to a table\n\nUsage:  <JSON Data> | jtbl [OPTIONS]\n\n        -n  do not try to wrap if too long for the terminal width\n        -t  truncate data instead of wrapping if too long for the terminal width\n        -v  version info\n        -h  help\n')
 
-    table_format = 'simple'
-    columns = shutil.get_terminal_size().columns
-
-    if sys.stdin.isatty():
-            print('jtbl:  Missing piped data\n')
-            sys.exit(1)
-
-    pipe_data = sys.stdin.read()
+    if pipe_data is None:
+        return (True, 'jtbl:  Missing piped data\n')
 
     try:
         data = json.loads(pipe_data)
@@ -128,25 +135,34 @@ def main():
                 data_list.append(entry)
             except Exception as e:
                 # can't parse the data. Throw a nice message and quit
-                print(f'jtbl:  Exception - {e}\n       Cannot parse line {i + 1} (Not JSON or JSON Lines data):\n       {str(jsonline)[0:columns - 8]}\n', file=sys.stderr)
-                sys.exit(1)
+                return (True, f'jtbl:  Exception - {e}\n       Cannot parse line {i + 1} (Not JSON or JSON Lines data):\n       {str(jsonline)[0:columns - 8]}\n')
 
         data = data_list
 
     try:
         if not isinstance(data[0], dict):
             data = json.dumps(data)
-            print(f'jtbl:  Cannot represent this part of the JSON Object as a table.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {str(data)[0:columns - 8]}\n', file=sys.stderr)
-            sys.exit(1)
+            return (True, f'jtbl:  Cannot represent this part of the JSON Object as a table.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {str(data)[0:columns - 8]}\n')
+
     except Exception:
         # can't parse the data. Throw a nice message and quit
-        print(f'jtbl:  Cannot parse the data (Not JSON or JSON Lines data):\n       {str(data)[0:columns - 8]}\n', file=sys.stderr)
-        sys.exit(1)
+        return (True, f'jtbl:  Cannot parse the data (Not JSON or JSON Lines data):\n       {str(data)[0:columns - 8]}\n')
 
     if not nowrap:
         data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
 
-    print(tabulate.tabulate(data, headers='keys', tablefmt=table_format))
+    return (False, tabulate.tabulate(data, headers='keys', tablefmt=table_format))
+
+
+def main():
+    error = False
+    stdin = get_stdin()
+    error, result = make_table(pipe_data=stdin, args=sys.argv)
+
+    if error:
+        print_error(result)
+    else:
+        print(result)
 
 
 if __name__ == '__main__':
