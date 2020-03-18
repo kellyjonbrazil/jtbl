@@ -83,11 +83,9 @@ def main():
     signal.signal(signal.SIGINT, ctrlc)
 
     options = []
-
-    # options
-    for opt in sys.argv:
-        if opt.startswith('-') and not opt.startswith('--'):
-            options.extend(opt[1:])
+    for arg in sys.argv:
+        if arg.startswith('-') and not arg.startswith('--'):
+            options.extend(arg[1:])
 
     nowrap = 'n' in options
     truncate = 't' in options
@@ -138,7 +136,7 @@ def main():
             data = json.dumps(data)
             print(f'jtbl:  Cannot represent this part of the JSON Object as a table.\n       (Could be an Element, an Array, or Null data instead of an Object):\n       {str(data)[0:columns - 8]}\n', file=sys.stderr)
             sys.exit(1)
-    except Exception as e:
+    except Exception:
         # can't parse the data. Throw a nice message and quit
         print(f'jtbl:  Cannot parse the data (Not JSON or JSON Lines data):\n       {str(data)[0:columns - 8]}\n', file=sys.stderr)
         sys.exit(1)
