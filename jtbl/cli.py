@@ -162,9 +162,8 @@ def make_table(pipe_data=None, args='', columns=None, table_format='simple'):
 
 
 def main():
-    success = False
     stdin = get_stdin()
-    error, result = make_table(pipe_data=stdin, args=sys.argv)
+    success, result = make_table(pipe_data=stdin, args=sys.argv)
 
     if success:
         print(result)
