@@ -5,6 +5,14 @@ import jtbl.cli
 
 class MyTests(unittest.TestCase):
 
+    def test_no_piped_data(self):
+        stdin = None
+        expected = textwrap.dedent('''\
+        jtbl:   Missing piped data
+        ''')
+
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
+
     def test_simple_key_value(self):
         stdin = '[{"key": "value"}]'
         expected = textwrap.dedent('''\
@@ -43,6 +51,25 @@ class MyTests(unittest.TestCase):
         ''')
 
         self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
+
+    def test_array_input(self):
+        stdin = '["value1", "value2", "value3"]'
+        expected = textwrap.dedent('''\
+        jtbl:  Cannot represent this part of the JSON Object as a table.
+               (Could be an Element, an Array, or Null data instead of an Object):
+               ["value1", "value2", "value3"]
+        ''')
+
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (True, expected))
+
+    def test_deep_nest(self):
+        stdin = '{"this":{"is":{"a":{"deeply":{"nested":{"structure":"value1","item2":"value2"}}}}}}'
+        expected = textwrap.dedent('''\
+        this
+        ---------------------------------------------------------------------------------
+        {'is': {'a': {'deeply': {'nested': {'structure': 'value1', 'item2': 'value2'}}}}}''')
+
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
 
     def test_jc_dig(self):
         stdin = '[{"id": 55658, "opcode": "QUERY", "status": "NOERROR", "flags": ["qr", "rd", "ra"], "query_num": 1, "answer_num": 5, "authority_num": 0, "additional_num": 1, "question": {"name": "www.cnn.com.", "class": "IN", "type": "A"}, "answer": [{"name": "www.cnn.com.", "class": "IN", "type": "CNAME", "ttl": 147, "data": "turner-tls.map.fastly.net."}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.1.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.65.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.129.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.193.67"}], "query_time": 44, "server": "2600", "when": "Wed Mar 18 12:20:59 PDT 2020", "rcvd": 143}]'
@@ -299,6 +326,63 @@ class MyTests(unittest.TestCase):
         turner-tls.map.fastly.net.  IN       A           5  151.101.193.67''')
 
         self.assertEqual(jtbl.cli.make_table(pipe_data=stdin, columns=80), (False, expected))
+
+
+    def test_json_lines(self):
+        stdin = textwrap.dedent('''\
+        {"name":"lo0","type":null,"ipv4_addr":"127.0.0.1","ipv4_mask":"255.0.0.0"}
+        {"name":"gif0","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"stf0","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"XHC0","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"XHC20","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"VHC128","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"XHC1","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"en5","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"ap1","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"en0","type":null,"ipv4_addr":"192.168.1.221","ipv4_mask":"255.255.255.0"}
+        {"name":"p2p0","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"awdl0","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"en1","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"en2","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"en3","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"en4","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"bridge0","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"utun0","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"utun1","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"utun2","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"utun3","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"utun4","type":null,"ipv4_addr":null,"ipv4_mask":null}
+        {"name":"vmnet1","type":null,"ipv4_addr":"192.168.101.1","ipv4_mask":"255.255.255.0"}
+        {"name":"vmnet8","type":null,"ipv4_addr":"192.168.71.1","ipv4_mask":"255.255.255.0"}''')
+        expected = textwrap.dedent('''\
+        name     type    ipv4_addr      ipv4_mask
+        -------  ------  -------------  -------------
+        lo0              127.0.0.1      255.0.0.0
+        gif0
+        stf0
+        XHC0
+        XHC20
+        VHC128
+        XHC1
+        en5
+        ap1
+        en0              192.168.1.221  255.255.255.0
+        p2p0
+        awdl0
+        en1
+        en2
+        en3
+        en4
+        bridge0
+        utun0
+        utun1
+        utun2
+        utun3
+        utun4
+        vmnet1           192.168.101.1  255.255.255.0
+        vmnet8           192.168.71.1   255.255.255.0''')
+
+        self.assertEqual(jtbl.cli.make_table(pipe_data=stdin), (False, expected))
 
 
 if __name__ == '__main__':
