@@ -81,7 +81,7 @@ class MyTests(unittest.TestCase):
         ---------------------------------------------------------------------------------
         {'is': {'a': {'deeply': {'nested': {'structure': 'value1', 'item2': 'value2'}}}}}''')
 
-        self.assertEqual(jtbl.cli.make_table(input_data=stdin), (self.SUCCESS, expected))
+        self.assertEqual(jtbl.cli.make_table(input_data=stdin, columns=100), (self.SUCCESS, expected))
 
     def test_jc_dig(self):
         stdin = '[{"id": 55658, "opcode": "QUERY", "status": "NOERROR", "flags": ["qr", "rd", "ra"], "query_num": 1, "answer_num": 5, "authority_num": 0, "additional_num": 1, "question": {"name": "www.cnn.com.", "class": "IN", "type": "A"}, "answer": [{"name": "www.cnn.com.", "class": "IN", "type": "CNAME", "ttl": 147, "data": "turner-tls.map.fastly.net."}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.1.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.65.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.129.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.193.67"}], "query_time": 44, "server": "2600", "when": "Wed Mar 18 12:20:59 PDT 2020", "rcvd": 143}]'
