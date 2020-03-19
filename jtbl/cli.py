@@ -43,7 +43,15 @@ def print_error(message):
 
 
 def wrap(data, columns, table_format, truncate):
-    """wrap or truncate the data to fit the terminal width"""
+    """
+    Wrap or truncate the data to fit the terminal width.
+
+    Returns a tuple of (data, table_format)
+        data (dictionary)       a modified dictionary with wrapped or truncated string values.
+                                wrapping is achieved by inserting \n characters into the value strings.
+
+        table_format (string)   'simple' (for truncation) or 'grid' (for wrapping)
+    """
 
     # find the length of the keys (headers) and longest values
     data_width = {}
@@ -114,12 +122,16 @@ def make_table(input_data=None,
                columns=None,
                table_format='simple'):
     """
-    returns a tuple of (success, result)
-        success (boolean)   True if no error, False if error encountered
-        result (string)     text string of the table result or error message
+    Generates the table from the JSON input.
+
+    Returns a tuple of ([SUCCESS | ERROR], result)
+        SUCCESS | ERROR (boolean)   SUCCESS (True) if no error, ERROR (False) if error encountered
+        result (string)             text string of the table result or error message
     """
+    SUCCESS, ERROR = True, False
+
     if input_data is None:
-        return (False, 'jtbl:   Missing piped data\n')
+        return (ERROR, 'jtbl:   Missing piped data\n')
 
     if columns is None:
         columns = shutil.get_terminal_size().columns
@@ -141,7 +153,7 @@ def make_table(input_data=None,
                 data_list.append(entry)
             except Exception as e:
                 # can't parse the data. Throw a nice message and quit
-                return (False, textwrap.dedent(f'''\
+                return (ERROR, textwrap.dedent(f'''\
                     jtbl:  Exception - {e}
                            Cannot parse line {i + 1} (Not JSON or JSON Lines data):
                            {str(jsonline)[0:columns - 8]}
@@ -152,7 +164,7 @@ def make_table(input_data=None,
     try:
         if not isinstance(data[0], dict):
             data = json.dumps(data)
-            return (False, textwrap.dedent(f'''\
+            return (ERROR, textwrap.dedent(f'''\
                 jtbl:  Cannot represent this part of the JSON Object as a table.
                        (Could be an Element, an Array, or Null data instead of an Object):
                        {str(data)[0:columns - 8]}
@@ -160,7 +172,7 @@ def make_table(input_data=None,
 
     except Exception:
         # can't parse the data. Throw a nice message and quit
-        return (False, textwrap.dedent(f'''\
+        return (ERROR, textwrap.dedent(f'''\
             jtbl:  Cannot parse the data (Not JSON or JSON Lines data):
                    {str(data)[0:columns - 8]}
                    '''))
@@ -168,7 +180,7 @@ def make_table(input_data=None,
     if not nowrap:
         data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
 
-    return (True, tabulate.tabulate(data, headers='keys', tablefmt=table_format))
+    return (SUCCESS, tabulate.tabulate(data, headers='keys', tablefmt=table_format))
 
 
 def main():
@@ -205,9 +217,9 @@ def main():
     if helpme:
         helptext()
 
-    success, result = make_table(input_data=stdin, truncate=truncate, nowrap=nowrap, columns=columns)
+    succeeeded, result = make_table(input_data=stdin, truncate=truncate, nowrap=nowrap, columns=columns)
 
-    if success:
+    if succeeeded:
         print(result)
     else:
         print_error(result)
