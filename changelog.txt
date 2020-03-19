@@ -1,5 +1,12 @@
 jtbl changelog
 
+20200318 v1.1.1
+- Add --cols option to manually set the terminal width
+
+20200318 v1.1.0
+- Refactored code for unit tests
+- Added unit tests
+
 20200317 v1.0.0
 - Add nowrap option
 - Refactored wrap into a function
