@@ -369,6 +369,7 @@ class MyTests(unittest.TestCase):
 
 
     def test_json_lines(self):
+        """test JSON Lines data"""
         stdin = textwrap.dedent('''\
         {"name":"lo0","type":null,"ipv4_addr":"127.0.0.1","ipv4_mask":"255.0.0.0"}
         {"name":"gif0","type":null,"ipv4_addr":null,"ipv4_mask":null}
