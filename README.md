@@ -38,7 +38,7 @@ $ <JSON Data> | jtbl [OPTIONS]
 ```
 ### Options
 - `--cols=n` manually configure the terminal width
-- `-n` no data wrapping if too long for the terminal width (overrides `--cols`)
+- `-n` no data wrapping if too long for the terminal width (overrides `--cols` and `-t`)
 - `-t` truncate data instead of wrapping if too long for the terminal width
 - `-v` prints version information
 - `-h` prints help information
@@ -208,4 +208,4 @@ turner-tls.map.fastly.net.  IN       A          23  151.101.193.67
 
 You can use the `-t` option to truncate the rows instead of wrapping when the terminal width is too small for all of the data.
 
-The `-n` option disables wrapping and overrides the `--cols` option.
+The `-n` option disables wrapping and overrides the `--cols` and `-t` options.
