@@ -24,15 +24,15 @@ def get_stdin():
 
 def helptext():
     print_error(textwrap.dedent('''\
-            jtbl:   Converts JSON and JSON Lines to a table
-                                       
-            Usage:  <JSON Data> | jtbl [OPTIONS]
+        jtbl:   Converts JSON and JSON Lines to a table
+                                   
+        Usage:  <JSON Data> | jtbl [OPTIONS]
 
-                    --cols=n   manually configure the terminal width
-                    -n         do not try to wrap if too long for the terminal width        
-                    -t         truncate data instead of wrapping if too long for the terminal width
-                    -v         version info
-                    -h         help
+                --cols=n   manually configure the terminal width
+                -n         do not try to wrap if too long for the terminal width        
+                -t         truncate data instead of wrapping if too long for the terminal width
+                -v         version info
+                -h         help
     '''))
 
 
