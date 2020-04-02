@@ -19,7 +19,7 @@ $ cat cities.json | jtbl
 
 `jtbl` expects a JSON array of JSON objects or [JSON Lines](http://jsonlines.org/).
 
-It can be useful to JSONify command line output with `jc`, filter through `jq`, and present in `jtbl`:
+It can be useful to JSONify command line output with `jc`, filter through a tool like `jq`, and present in `jtbl`:
 ```
 $ jc ifconfig | jq -c '.[] | {name, type, ipv4_addr, ipv4_mask}'| jtbl 
 name     type            ipv4_addr       ipv4_mask
@@ -80,7 +80,7 @@ $ <JSON Data> | jtbl [OPTIONS]
 ```
 
 ## Filtering the JSON Input
-If there are too many elements, or the data in the elements are too large, the table may not fit in the terminal screen. In this case you can use a JSON filter like `jq` to send `jtbl` only the elements you are interested in:
+If there are too many elements, or the data in the elements are too large, the table may not fit in the terminal screen. In this case you can use a JSON filter like `jq` or `jello` to send `jtbl` only the elements you are interested in:
 
 ### `jq` Array Method
 The following example uses `jq` to filter and format the filtered elements into a proper JSON array.
@@ -137,8 +137,30 @@ $ cat /etc/passwd | jc --passwd | jq -c '.[] | {username, shell}'
 ```
 *(Notice the `-c` option being used)*
 
+### `jello` List Comprehension Method
+If you prefer python list and dictionary syntax to filter JSON data, you can use `jello`:
+```
+$ cat /etc/passwd | jc --passwd | jello '[{"username": x["username"], "shell": x["shell"]} for x in _]'
+[
+  {
+    "username": "root",
+    "shell": "/bin/bash"
+  },
+  {
+    "username": "bin",
+    "shell": "/sbin/nologin"
+  },
+  {
+    "username": "daemon",
+    "shell": "/sbin/nologin"
+  },
+  ...
+]
+```
+
 When piping any of these to `jtbl` you get the following result:
 ```
+$ cat /etc/passwd | jc --passwd | jello '[{"username": x["username"], "shell": x["shell"]} for x in _]' | jtbl
 username         shell
 ---------------  --------------
 root             /bin/bash
@@ -170,10 +192,19 @@ $ jc dig www.cnn.com | jtbl
 +-------+----------+----------+--------------+-------------+--------------+-----------------+------------------+--------------+--------------+--------------+----------+--------------+--------+
 ```
 
-## Diving Deeper into the JSON with `jq`
-To get to the data you are interested in you can use a JSON filter like `jq` to dive deeper.
+## Diving Deeper into the JSON with `jq` or `jello`:
+To get to the data you are interested in you can use a JSON filter like `jq` or `jello` to dive deeper.
+
+Using `jq`:
 ```
-$ jc dig www.cnn.com | jq '.[].answer' 
+$ jc dig www.cnn.com | jq '.[0].answer' 
+```
+or with `jello`:
+```
+$ jc dig www.cnn.com | jello '_[0]["answer"]'
+```
+Both will produce the following output:
+```
 [
   {
     "name": "www.cnn.com.",
@@ -195,6 +226,7 @@ $ jc dig www.cnn.com | jq '.[].answer'
 
 This will produce the following table in `jtbl`
 ```
+$ jc dig www.cnn.com | jello '_[0]["answer"]' | jtbl
 name                        class    type      ttl  data
 --------------------------  -------  ------  -----  --------------------------
 www.cnn.com.                IN       CNAME      11  turner-tls.map.fastly.net.
