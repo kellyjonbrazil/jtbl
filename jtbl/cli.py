@@ -19,8 +19,8 @@ def get_stdin():
     """return STDIN data"""
     if sys.stdin.isatty():
         return None
-
-    return sys.stdin.read()
+    else:
+        return sys.stdin.read()
 
 
 def helptext():
