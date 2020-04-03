@@ -1,4 +1,4 @@
-![Test code](https://github.com/kellyjonbrazil/jtbl/workflows/Test%20code/badge.svg?branch=master)
+![Tests](https://github.com/kellyjonbrazil/jtbl/workflows/Tests/badge.svg?branch=master)
 
 # jtbl
 A simple cli tool to print JSON data as a table in the terminal.
