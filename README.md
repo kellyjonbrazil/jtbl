@@ -1,4 +1,5 @@
 ![Tests](https://github.com/kellyjonbrazil/jtbl/workflows/Tests/badge.svg?branch=master)
+![Pypi](https://img.shields.io/pypi/v/jtbl.svg)
 
 # jtbl
 A simple cli tool to print JSON data as a table in the terminal.
