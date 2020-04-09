@@ -7,7 +7,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.1.1'
+__version__ = '1.1.2'
 
 
 def ctrlc(signum, frame):
@@ -187,6 +187,12 @@ def make_table(input_data=None,
 def main():
     # break on ctrl-c keyboard interrupt
     signal.signal(signal.SIGINT, ctrlc)
+
+    # break on pipe error. need try/except for windows compatibility
+    try:
+        signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+    except AttributeError:
+        pass
 
     stdin = get_stdin()
 

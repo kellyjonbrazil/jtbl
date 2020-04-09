@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200409 v1.1.2
+- fix break on pipe error
+
 20200318 v1.1.1
 - Add --cols option to manually set the terminal width
 
