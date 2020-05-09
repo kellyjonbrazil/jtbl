@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200509 v1.1.3
+- Remove tests from package
+
 20200409 v1.1.2
 - fix break on pipe error
 

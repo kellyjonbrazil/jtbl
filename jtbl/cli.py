@@ -7,7 +7,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.1.2'
+__version__ = '1.1.3'
 
 
 def ctrlc(signum, frame):
