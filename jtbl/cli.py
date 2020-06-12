@@ -5,7 +5,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.1.3'
+__version__ = '1.1.4'
 
 
 def ctrlc(signum, frame):
@@ -222,12 +222,15 @@ def main():
     if helpme:
         helptext()
 
-    succeeeded, result = make_table(input_data=stdin, truncate=truncate, nowrap=nowrap, columns=columns)
+    # only process if there is data
+    if list(filter(None, stdin.strip().splitlines())):
 
-    if succeeeded:
-        print(result)
-    else:
-        print_error(result)
+        succeeeded, result = make_table(input_data=stdin, truncate=truncate, nowrap=nowrap, columns=columns)
+
+        if succeeeded:
+            print(result)
+        else:
+            print_error(result)
 
 
 if __name__ == '__main__':

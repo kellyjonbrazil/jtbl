@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200612 v1.1.4
+- Handle blank input gracefully
+
 20200509 v1.1.3
 - Remove tests from package
 
