@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200614 v1.1.6
+- Move handling of blank input to make_table()
+
 20200614 v1.1.5
 - Improve handling of blank input
 

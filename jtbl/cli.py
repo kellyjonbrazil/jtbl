@@ -5,7 +5,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.1.5'
+__version__ = '1.1.6'
 
 
 def ctrlc(signum, frame):
@@ -135,51 +135,57 @@ def make_table(input_data=None,
     if columns is None:
         columns = shutil.get_terminal_size().columns
 
-    try:
-        data = json.loads(input_data)
-        if type(data) is not list:
+    # only process if there is data
+    if input_data and not input_data.isspace():
+
+        try:
+            data = json.loads(input_data)
+            if type(data) is not list:
+                data_list = []
+                data_list.append(data)
+                data = data_list
+
+        except Exception:
+            # if json.loads fails, assume the data is formatted as json lines and parse
+            data = input_data.splitlines()
             data_list = []
-            data_list.append(data)
+            for i, jsonline in enumerate(data):
+                try:
+                    entry = json.loads(jsonline)
+                    data_list.append(entry)
+                except Exception as e:
+                    # can't parse the data. Throw a nice message and quit
+                    return (ERROR, textwrap.dedent(f'''\
+                        jtbl:  Exception - {e}
+                               Cannot parse line {i + 1} (Not JSON or JSON Lines data):
+                               {str(jsonline)[0:columns - 8]}
+                               '''))
+
             data = data_list
 
-    except Exception:
-        # if json.loads fails, assume the data is formatted as json lines and parse
-        data = input_data.splitlines()
-        data_list = []
-        for i, jsonline in enumerate(data):
-            try:
-                entry = json.loads(jsonline)
-                data_list.append(entry)
-            except Exception as e:
-                # can't parse the data. Throw a nice message and quit
+        try:
+            if not isinstance(data[0], dict):
+                data = json.dumps(data)
                 return (ERROR, textwrap.dedent(f'''\
-                    jtbl:  Exception - {e}
-                           Cannot parse line {i + 1} (Not JSON or JSON Lines data):
-                           {str(jsonline)[0:columns - 8]}
+                    jtbl:  Cannot represent this part of the JSON Object as a table.
+                           (Could be an Element, an Array, or Null data instead of an Object):
+                           {str(data)[0:columns - 8]}
                            '''))
 
-        data = data_list
-
-    try:
-        if not isinstance(data[0], dict):
-            data = json.dumps(data)
+        except Exception:
+            # can't parse the data. Throw a nice message and quit
             return (ERROR, textwrap.dedent(f'''\
-                jtbl:  Cannot represent this part of the JSON Object as a table.
-                       (Could be an Element, an Array, or Null data instead of an Object):
+                jtbl:  Cannot parse the data (Not JSON or JSON Lines data):
                        {str(data)[0:columns - 8]}
                        '''))
 
-    except Exception:
-        # can't parse the data. Throw a nice message and quit
-        return (ERROR, textwrap.dedent(f'''\
-            jtbl:  Cannot parse the data (Not JSON or JSON Lines data):
-                   {str(data)[0:columns - 8]}
-                   '''))
+        if not nowrap:
+            data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
 
-    if not nowrap:
-        data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
+        return (SUCCESS, tabulate.tabulate(data, headers='keys', tablefmt=table_format))
 
-    return (SUCCESS, tabulate.tabulate(data, headers='keys', tablefmt=table_format))
+    else:
+        return (ERROR, '')
 
 
 def main():
@@ -222,15 +228,12 @@ def main():
     if helpme:
         helptext()
 
-    # only process if there is data
-    if stdin and not stdin.isspace():
+    succeeeded, result = make_table(input_data=stdin, truncate=truncate, nowrap=nowrap, columns=columns)
 
-        succeeeded, result = make_table(input_data=stdin, truncate=truncate, nowrap=nowrap, columns=columns)
-
-        if succeeeded:
-            print(result)
-        else:
-            print_error(result)
+    if succeeeded:
+        print(result)
+    else:
+        print_error(result)
 
 
 if __name__ == '__main__':

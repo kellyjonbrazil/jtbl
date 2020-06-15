@@ -18,10 +18,7 @@ class MyTests(unittest.TestCase):
 
     def test_null_data(self):
         stdin = ''
-        expected = textwrap.dedent('''\
-        jtbl:  Cannot parse the data (Not JSON or JSON Lines data):
-               []
-        ''')
+        expected = ''
 
         self.assertEqual(jtbl.cli.make_table(input_data=stdin), (self.ERROR, expected))
 
