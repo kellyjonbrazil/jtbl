@@ -1,5 +1,8 @@
 jtbl changelog
 
+20200614 v1.1.5
+- Improve handling of blank input
+
 20200612 v1.1.4
 - Handle blank input gracefully
 
