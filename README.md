@@ -31,9 +31,34 @@ lo       Local Loopback  127.0.0.1       255.0.0.0
 ```
 
 ## Installation
+You can install `jtbl` via `pip` or by downloading the correct binary for your architecture and running it anywhere on your filesystem.
+
+### Pip (macOS, linux, unix, Windows)
+For the most up-to-date version and the most cross-platform option, use `pip` or `pip3` to download and install `jtbl` directly from [PyPi](https://pypi.org/project/jtbl/):
+
+![Pypi](https://img.shields.io/pypi/v/jtbl.svg)
+
+
+```bash
+pip3 install jtbl
 ```
-pip3 install --upgrade jtbl
-```
+
+### Binaries
+Linux and macOS binaries are built from PyPi and can be copied to any location in your path and run. These binaries may not always be on the very latest `jtbl` version, but are regularly updated.
+
+#### Linux (Fedora, RHEL, CentOS, Debian, Ubuntu)
+
+| Version   | File                                                                                                        | SHA256 Hash (binary file)                                         |
+|-----------|-------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| 1.1.6     | [jtbl-1.1.6-linux.tar.gz](https://jtbl-packages.s3-us-west-1.amazonaws.com/bin/jtbl-1.1.6-linux.tar.gz)  | 7fb8e7a2d3858ac1c0975fe2646de8963dd75e7290b9bc32215bc65933e33cbf  |
+
+
+#### macOS (Mojave and higher)
+
+| Version   | File                                                                                                       | SHA256 Hash (binary file)                                         |
+|-----------|------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| 1.1.6     | [jtbl-1.1.6-darwin.tar.gz](https://jtbl-packages.s3-us-west-1.amazonaws.com/bin/jtbl-1.1.6-darwin.tar.gz)  | 34a5a0b6155a1080ea86f6c3a6e68f451fcf3e3eab8ea023735d21cae44cba25  |
+
 ## Usage
 Just pipe JSON data to `jtbl`. (e.g. `cat` a JSON file, `jc`, `jq`, `aws` cli, `kubectl`, etc.)
 ```
