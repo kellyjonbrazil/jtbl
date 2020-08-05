@@ -43,8 +43,8 @@ For the most up-to-date version and the most cross-platform option, use `pip` or
 pip3 install jtbl
 ```
 
-### Binaries
-Linux and macOS binaries are built from PyPi and can be copied to any location in your path and run. These binaries may not always be on the very latest `jtbl` version, but are regularly updated.
+### Binaries (x86_64)
+Linux and macOS x86_64 binaries are built from PyPi and can be copied to any location in your path and run. These binaries may not always be on the very latest `jtbl` version, but are regularly updated.
 
 #### Linux (Fedora, RHEL, CentOS, Debian, Ubuntu)
 
