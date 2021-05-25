@@ -31,7 +31,7 @@ lo       Local Loopback  127.0.0.1       255.0.0.0
 ```
 
 ## Installation
-You can install `jtbl` via `pip`, via OS Package Repositories, or by downloading the correct binary for your architecture and running it anywhere on your filesystem.
+You can install `jtbl` via `pip`, via OS Package Repositories, MSI installer for Windows, or by downloading the correct binary for your architecture and running it anywhere on your filesystem.
 
 ### Pip (macOS, linux, unix, Windows)
 For the most up-to-date version and the most cross-platform option, use `pip` or `pip3` to download and install `jtbl` directly from [PyPi](https://pypi.org/project/jtbl/):
@@ -46,6 +46,13 @@ pip3 install jtbl
 ### OS Packages
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/jtbl.svg)](https://repology.org/project/jtbl/versions)
+
+### MSI Installer (Windows 2016+)
+The MSI Installer packages for Windows are built from PyPi and can be installed on modern versions of Windows. These installers may not always be on the very latest `jtbl` version, but are regularly updated.
+
+| Version   | File                                                                              | SHA256 Hash                                                       |
+|-----------|-----------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| 1.1.6    | [jtbl-1.1.6.msi](https://jtbl-packages.s3-us-west-1.amazonaws.com/jtbl-1.1.6.msi)  | c0008e6ab020dd8ed663629f8eea3c7dbe0d4797937bec46fa38c263b6270a10  |
 
 ### Binaries (x86_64)
 Linux and macOS x86_64 binaries are built from PyPi and can be copied to any location in your path and run. These binaries may not always be on the very latest `jtbl` version, but are regularly updated.
