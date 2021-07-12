@@ -1,5 +1,8 @@
 jtbl changelog
 
+20210712 v1.1.7
+- Include CHANGELOG in source distribution (no other code changes)
+
 20200614 v1.1.6
 - Move handling of blank input to make_table()
 
