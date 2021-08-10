@@ -177,7 +177,7 @@ $ cat /etc/passwd | jc --passwd | jq -c '.[] | {username, shell}'
 ### `jello` List Comprehension Method
 If you prefer python list and dictionary syntax to filter JSON data, you can use `jello`:
 ```
-$ cat /etc/passwd | jc --passwd | jello '[{"username": x["username"], "shell": x["shell"]} for x in _]'
+$ cat /etc/passwd | jc --passwd | jello '[{"username": x.username, "shell": x.shell} for x in _]'
 [
   {
     "username": "root",
@@ -197,7 +197,7 @@ $ cat /etc/passwd | jc --passwd | jello '[{"username": x["username"], "shell": x
 
 When piping any of these to `jtbl` you get the following result:
 ```
-$ cat /etc/passwd | jc --passwd | jello '[{"username": x["username"], "shell": x["shell"]} for x in _]' | jtbl
+$ cat /etc/passwd | jc --passwd | jello '[{"username": x.username, "shell": x.shell} for x in _]' | jtbl
 username         shell
 ---------------  --------------
 root             /bin/bash
@@ -238,7 +238,7 @@ $ jc dig www.cnn.com | jq '.[0].answer'
 ```
 or with `jello`:
 ```
-$ jc dig www.cnn.com | jello '_[0]["answer"]'
+$ jc dig www.cnn.com | jello '_[0].answer'
 ```
 Both will produce the following output:
 ```
@@ -263,7 +263,7 @@ Both will produce the following output:
 
 This will produce the following table in `jtbl`
 ```
-$ jc dig www.cnn.com | jello '_[0]["answer"]' | jtbl
+$ jc dig www.cnn.com | jello '_[0].answer' | jtbl
 name                        class    type      ttl  data
 --------------------------  -------  ------  -----  --------------------------
 www.cnn.com.                IN       CNAME      11  turner-tls.map.fastly.net.
