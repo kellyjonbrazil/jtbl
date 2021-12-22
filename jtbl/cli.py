@@ -5,7 +5,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 
 
 def ctrlc(signum, frame):
@@ -156,7 +156,8 @@ def make_table(data=None,
                truncate=False,
                nowrap=False,
                columns=None,
-               table_format='simple'):
+               table_format='simple',
+               rotate=False):
     """
     Generates the table from the JSON input.
 
@@ -187,7 +188,12 @@ def make_table(data=None,
         if not nowrap:
             data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
 
-        return (SUCCESS, tabulate.tabulate(data, headers='keys', tablefmt=table_format))
+        headers = 'keys'
+        if rotate:
+            table_format = 'plain'
+            headers = ''
+
+        return (SUCCESS, tabulate.tabulate(data, headers=headers, tablefmt=table_format))
 
     else:
         return (ERROR, '')
@@ -251,7 +257,8 @@ def main():
             succeeeded, result = make_table(data=rotated_data,
                                         truncate=truncate,
                                         nowrap=nowrap,
-                                        columns=columns)
+                                        columns=columns,
+                                        rotate=True)
             if succeeeded:
                 print(f'item: {idx}')
                 print(result)
