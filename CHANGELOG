@@ -1,5 +1,8 @@
 jtbl changelog
 
+20211222 v1.2.1
+- Remove borders around rotated items
+
 20211221 v1.2.0
 - Add rotate option to print seperate key/value tables for each row
 
