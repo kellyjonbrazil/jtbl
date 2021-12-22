@@ -6,7 +6,7 @@ A simple cli tool to print JSON data as a table in the terminal.
 
 `jtbl` accepts piped JSON data from `stdin` and outputs a text table representation to `stdout`. e.g:
 ```
-$ cat cities.json | jtbl 
+$ cat cities.json | jtbl
   LatD    LatM    LatS  NS      LonD    LonM    LonS  EW    City               State
 ------  ------  ------  ----  ------  ------  ------  ----  -----------------  -------
     41       5      59  N         80      39       0  W     Youngstown         OH
@@ -22,7 +22,7 @@ $ cat cities.json | jtbl
 
 It can be useful to JSONify command line output with `jc`, filter through a tool like `jq`, and present in `jtbl`:
 ```
-$ jc ifconfig | jq -c '.[] | {name, type, ipv4_addr, ipv4_mask}'| jtbl 
+$ jc ifconfig | jq -c '.[] | {name, type, ipv4_addr, ipv4_mask}'| jtbl
 name     type            ipv4_addr       ipv4_mask
 -------  --------------  --------------  -------------
 docker0  Ethernet        172.17.0.1      255.255.0.0
@@ -218,7 +218,7 @@ To get to the data you are interested in you can use a JSON filter like `jq` or 
 
 Using `jq`:
 ```
-$ jc dig www.cnn.com | jq '.[0].answer' 
+$ jc dig www.cnn.com | jq '.[0].answer'
 ```
 or with `jello`:
 ```
@@ -268,7 +268,7 @@ The `-n` option disables wrapping and overrides the `--cols` and `-t` options.
 This can be useful to present a nicely non-wrapped table of infinite width in combination with `less -S`:
 ```
 $ jc ps aux | jtbl -n | less -S
-user                  pid        vsz     rss  tt    stat    started    time       command                                            
+user                  pid        vsz     rss  tt    stat    started    time       command
 ------------------  -----  ---------  ------  ----  ------  ---------  ---------  ---------------------------------------------------
 joeuser             34029    4277364   24800  s000  S+      9:28AM     0:00.27    /usr/local/Cellar/python/3.7.6_1/Frameworks/Python....
 joeuser             34030    4283136   17104  s000  S+      9:28AM     0:00.20    /usr/local/Cellar/python/3.7.6_1/Frameworks/Python....
