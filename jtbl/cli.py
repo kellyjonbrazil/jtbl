@@ -5,7 +5,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.2.1'
+__version__ = '1.2.2'
 
 
 def ctrlc(signum, frame):
@@ -100,7 +100,7 @@ def wrap(data, columns, table_format, truncate):
                         add_keys.append((new_key, new_value))
 
                 else:
-                    table_format = 'grid'
+                    table_format = 'fancy_grid'
                     new_key = '\n'.join([str(k)[i:i + wrap_width] for i in range(0, len(str(k)), wrap_width)])
                     new_value = '\n'.join([str(v)[i:i + wrap_width] for i in range(0, len(str(v)), wrap_width)])
                     if k != new_key or v != new_value:

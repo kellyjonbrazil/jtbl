@@ -1,5 +1,8 @@
 jtbl changelog
 
+20211222 v1.2.2
+- Use nicer grid lines for tables
+
 20211222 v1.2.1
 - Remove borders around rotated items
 
