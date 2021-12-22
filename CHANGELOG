@@ -1,5 +1,8 @@
 jtbl changelog
 
+20211221 v1.2.0
+- Add rotate option to print seperate key/value tables for each row
+
 20210712 v1.1.7
 - Include CHANGELOG in source distribution (no other code changes)
 
