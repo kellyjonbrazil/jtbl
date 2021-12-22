@@ -121,6 +121,10 @@ def get_json(json_data, columns=None):
        (success/error, list of dictionaries)
     """
     SUCCESS, ERROR = True, False
+
+    if not json_data or json_data.isspace():
+        return (ERROR, 'jtbl:   Missing piped data\n')
+
     try:
         data = json.loads(json_data)
         if type(data) is not list:
@@ -142,8 +146,8 @@ def get_json(json_data, columns=None):
                 # can't parse the data. Throw a nice message and quit
                 return (ERROR, textwrap.dedent(f'''\
                     jtbl:  Exception - {e}
-                            Cannot parse line {i + 1} (Not JSON or JSON Lines data):
-                            {str(jsonline)[0:columns - 8]}
+                           Cannot parse line {i + 1} (Not JSON or JSON Lines data):
+                           {str(jsonline)[0:columns - 8]}
                             '''))
         return SUCCESS, data_list
 
@@ -161,9 +165,6 @@ def make_table(data=None,
         result (string)             text string of the table result or error message
     """
     SUCCESS, ERROR = True, False
-
-    if data is None:
-        return (ERROR, 'jtbl:   Missing piped data\n')
 
     # only process if there is data
     if data:
