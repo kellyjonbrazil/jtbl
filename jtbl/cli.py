@@ -5,7 +5,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 
 def ctrlc(signum, frame):
@@ -260,12 +260,13 @@ def main():
                                         columns=columns,
                                         rotate=True)
             if succeeeded:
-                print(f'item: {idx}')
+                if len(json_data) > 1:
+                    print(f'item: {idx}')
+                    print('─' * columns)
                 print(result)
                 print()
             else:
                 print_error(result)
-
 
     else:
         succeeeded, result = make_table(data=json_data,

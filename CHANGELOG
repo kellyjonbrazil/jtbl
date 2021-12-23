@@ -1,5 +1,9 @@
 jtbl changelog
 
+20211223 v1.2.3
+- Remove item header from rotate view if there is only one item
+- Add separator line under item header in rotate view
+
 20211222 v1.2.2
 - Use nicer grid lines for tables
 

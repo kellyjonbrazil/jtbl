@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name='jtbl',
-    version='1.2.2',
+    version='1.2.3',
     author='Kelly Brazil',
     author_email='kellyjonbrazil@gmail.com',
     description='A simple cli tool to print JSON and JSON Lines data as a table in the terminal.',
