@@ -47,11 +47,7 @@ pip3 install jtbl
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/jtbl.svg)](https://repology.org/project/jtbl/versions)
 
-### MSI Installer (Windows 2016+)
-The MSI Installer packages for Windows are built from PyPi and can be installed on modern versions of Windows. These installers may not always be on the very latest `jtbl` version, but are regularly updated. MSI Installer packages can be found under [Releases](https://github.com/kellyjonbrazil/jtbl/releases).
-
-### Binaries (x86_64)
-Linux and macOS x86_64 binaries are built from PyPi and can be copied to any location in your path and run. These binaries may not always be on the very latest `jtbl` version, but are regularly updated. Binaries can be found under [Releases](https://github.com/kellyjonbrazil/jtbl/releases).
+See [Releases](https://github.com/kellyjonbrazil/jtbl/releases) on Github for MSI packages and binaries.
 
 ## Usage
 Just pipe JSON data to `jtbl`. (e.g. `cat` a JSON file, `jc`, `jq`, `aws` cli, `kubectl`, etc.)
