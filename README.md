@@ -56,6 +56,7 @@ $ <JSON Data> | jtbl [OPTIONS]
 ```
 ### Options
 - `--cols=n` manually configure the terminal width
+- `-m` markdown table output (overrides `--cols` and `-t`)
 - `-n` no data wrapping if too long for the terminal width (overrides `--cols` and `-t`)
 - `-r` rotate the data (each row turns into a table of key/value pairs)
 - `-t` truncate data instead of wrapping if too long for the terminal width
