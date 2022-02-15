@@ -226,13 +226,16 @@ def main():
                 helptext()
 
     markdown = 'm' in options
-    nowrap = 'n' in options or markdown
+    nowrap = 'n' in options
     rotate = 'r' in options
     truncate = 't' in options
     version_info = 'v' in options
     helpme = 'h' in options
 
     tbl_fmt = 'github' if markdown else 'simple'
+
+    if not rotate and markdown:
+        nowrap = True
 
     columns = None
     if 'cols' in long_options:
