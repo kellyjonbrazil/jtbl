@@ -29,9 +29,9 @@ def helptext():
 
                 --cols=n   manually configure the terminal width
                 -m         markdown table output
-                -n         do not try to wrap if too long for the terminal width
+                -n         do not try to wrap if too wide for the terminal
                 -r         rotate table output
-                -t         truncate data instead of wrapping if too long for the terminal width
+                -t         truncate data if too wide for the terminal
                 -v         version info
                 -h         help
     '''))
