@@ -2,6 +2,7 @@ jtbl changelog
 
 20220215 v1.3.0
 - Add -m markdown table output option
+- Add man page
 
 20211223 v1.2.3
 - Remove item header from rotate view if there is only one item
