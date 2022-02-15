@@ -400,6 +400,31 @@ class MyTests(unittest.TestCase):
 
         self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns), (self.SUCCESS, expected))
 
+    def test_markdown(self):
+        """test markdown output"""
+        stdin = [
+            {
+                "column1": "data",
+                "column2": 123,
+                "column3": True,
+                "column4": None
+            },
+            {
+                "column1": "This is a long string that should not be truncated by the markdown table format. Lines should not be wrapped for markdown.",
+                "column2": 123,
+                "column3": True,
+                "column4": None
+            }
+        ]
+
+        expected = textwrap.dedent('''\
+        | column1                                                                                                                    |   column2 | column3   | column4   |
+        |----------------------------------------------------------------------------------------------------------------------------|-----------|-----------|-----------|
+        | data                                                                                                                       |       123 | True      |           |
+        | This is a long string that should not be truncated by the markdown table format. Lines should not be wrapped for markdown. |       123 | True      |           |''')
+
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns, nowrap=True, table_format='github'), (self.SUCCESS, expected))
+
 
 if __name__ == '__main__':
     unittest.main()

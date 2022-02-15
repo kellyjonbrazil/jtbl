@@ -5,7 +5,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.2.3'
+__version__ = '1.3.0'
 
 
 def ctrlc(signum, frame):
@@ -28,6 +28,7 @@ def helptext():
         Usage:  <JSON Data> | jtbl [OPTIONS]
 
                 --cols=n   manually configure the terminal width
+                -m         markdown table output
                 -n         do not try to wrap if too long for the terminal width
                 -r         rotate table output
                 -t         truncate data instead of wrapping if too long for the terminal width
@@ -224,11 +225,14 @@ def main():
             except Exception:
                 helptext()
 
-    nowrap = 'n' in options
+    markdown = 'm' in options
+    nowrap = 'n' in options or markdown
     rotate = 'r' in options
     truncate = 't' in options
     version_info = 'v' in options
     helpme = 'h' in options
+
+    tbl_fmt = 'github' if markdown else 'simple'
 
     columns = None
     if 'cols' in long_options:
@@ -272,7 +276,8 @@ def main():
         succeeeded, result = make_table(data=json_data,
                                         truncate=truncate,
                                         nowrap=nowrap,
-                                        columns=columns)
+                                        columns=columns,
+                                        table_format=tbl_fmt)
 
         if succeeeded:
             print(result)
