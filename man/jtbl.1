@@ -1,0 +1,63 @@
+.TH jtbl 1 2022-02-15 1.3.0 "JTBL - JSON tables in the terminal"
+.SH NAME
+jtbl \- Print JSON and JSON Lines data as a table in the terminal
+.SH SYNOPSIS
+.PP
+
+A simple cli tool to print JSON data as a table in the terminal.
+
+jtbl accepts piped JSON or JSON Lines data from stdin and outputs a text table
+representation to stdout.
+.PP
+
+.SH USAGE
+
+cat data.json | jtbl [OPTIONS]
+
+.fi
+.PP
+
+.SS Options
+\fB--cols=n\fP manually configure the terminal width
+
+\fB-m\fP markdown table output
+
+\fB-n\fP do not try to wrap if too wide for the terminal
+
+\fB-r\fP rotate table output
+
+\fB-t\fP truncate data if too wide for the terminal
+
+\fB-v\fP version info
+
+.SS Example
+.na
+.nf
+$ echo '[
+>     {
+>         "column1": "foo",
+>         "column2": 123,
+>         "column3": true,
+>         "column4": null
+>     },
+>     {
+>         "column1": "bar",
+>         "column2": 456,
+>         "column3": false,
+>         "column4": null
+>     }
+> ]' | jtbl
+column1      column2  column3    column4
+---------  ---------  ---------  ---------
+foo              123  True
+bar              456  False
+
+.SH AUTHOR
+Kelly Brazil (kellyjonbrazil@gmail.com)
+
+https://github.com/kellyjonbrazil/jtbl
+
+.SH COPYRIGHT
+Copyright (c) 2020-2022 Kelly Brazil
+
+License: MIT License
