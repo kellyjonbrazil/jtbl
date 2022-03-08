@@ -1,5 +1,5 @@
-![Tests](https://github.com/kellyjonbrazil/jtbl/workflows/Tests/badge.svg?branch=master)
-![Pypi](https://img.shields.io/pypi/v/jtbl.svg)
+[![Tests](https://github.com/kellyjonbrazil/jtbl/workflows/Tests/badge.svg?branch=master)](https://github.com/kellyjonbrazil/jtbl/actions)
+[![Pypi](https://img.shields.io/pypi/v/jtbl.svg)](https://pypi.org/project/jtbl/)
 
 # jtbl
 A simple cli tool to print JSON data as a table in the terminal.
@@ -36,9 +36,7 @@ You can install `jtbl` via `pip`, via OS Package Repositories, MSI installer for
 ### Pip (macOS, linux, unix, Windows)
 For the most up-to-date version and the most cross-platform option, use `pip` or `pip3` to download and install `jtbl` directly from [PyPi](https://pypi.org/project/jtbl/):
 
-![Pypi](https://img.shields.io/pypi/v/jtbl.svg)
-
-
+[![Pypi](https://img.shields.io/pypi/v/jtbl.svg)](https://pypi.org/project/jtbl/)
 ```bash
 pip3 install jtbl
 ```
