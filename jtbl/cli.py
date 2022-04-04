@@ -5,7 +5,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.3.0'
+__version__ = '1.3.1'
 
 
 def ctrlc(signum, frame):
@@ -30,6 +30,7 @@ def helptext():
                 --cols=n   manually configure the terminal width
                 -m         markdown table output
                 -n         do not try to wrap if too wide for the terminal
+                -q         quiet - don't print error messages
                 -r         rotate table output
                 -t         truncate data if too wide for the terminal
                 -v         version info
@@ -37,9 +38,10 @@ def helptext():
     '''))
 
 
-def print_error(message):
+def print_error(message, quiet=False):
     """print error messages to STDERR and quit with error code"""
-    print(message, file=sys.stderr)
+    if not quiet:
+        print(message, file=sys.stderr)
     sys.exit(1)
 
 
@@ -227,6 +229,7 @@ def main():
 
     markdown = 'm' in options
     nowrap = 'n' in options
+    quiet = 'q' in options
     rotate = 'r' in options
     truncate = 't' in options
     version_info = 'v' in options
@@ -252,8 +255,7 @@ def main():
 
     succeeeded, json_data = get_json(stdin, columns=columns)
     if not succeeeded:
-        print(json_data)
-        sys.exit(1)
+        print_error(json_data, quiet=quiet)
 
     if rotate:
         for idx, row in enumerate(json_data):
@@ -273,7 +275,7 @@ def main():
                 print(result)
                 print()
             else:
-                print_error(result)
+                print_error(result, quiet=quiet)
 
     else:
         succeeeded, result = make_table(data=json_data,
@@ -285,7 +287,7 @@ def main():
         if succeeeded:
             print(result)
         else:
-            print_error(result)
+            print_error(result, quiet=quiet)
 
 
 if __name__ == '__main__':

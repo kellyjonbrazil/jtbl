@@ -1,5 +1,9 @@
 jtbl changelog
 
+20220404 v1.3.1
+- Add quiet option to suppress errors
+- Add man page to source package
+
 20220215 v1.3.0
 - Add -m markdown table output option
 - Add man page
