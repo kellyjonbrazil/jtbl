@@ -1,5 +1,8 @@
 jtbl changelog
 
+20220731 v1.3.2
+- Add `__main__.py` for `python -m jtbl` use cases
+
 20220404 v1.3.1
 - Add quiet option to suppress errors
 - Add man page to source package
