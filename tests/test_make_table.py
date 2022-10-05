@@ -204,108 +204,108 @@ class MyTests(unittest.TestCase):
     def test_jc_dig_150cols(self):
         stdin = [{"id": 55658, "opcode": "QUERY", "status": "NOERROR", "flags": ["qr", "rd", "ra"], "query_num": 1, "answer_num": 5, "authority_num": 0, "additional_num": 1, "question": {"name": "www.cnn.com.", "class": "IN", "type": "A"}, "answer": [{"name": "www.cnn.com.", "class": "IN", "type": "CNAME", "ttl": 147, "data": "turner-tls.map.fastly.net."}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.1.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.65.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.129.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.193.67"}], "query_time": 44, "server": "2600", "when": "Wed Mar 18 12:20:59 PDT 2020", "rcvd": 143}]
         expected = textwrap.dedent('''\
-        ╒══════════╤══════════╤═══════╤══════════╤═════════╤══════════╤══════════╤══════════╤══════════╤══════════╤══════════╤══════════╤════════╤════════╕
-        │ opcode   │   server │    id │ status   │ flags   │   query_ │   answer │   author │   additi │ questi   │ answer   │   query_ │ when   │   rcvd │
-        │          │          │       │          │         │      num │     _num │   ity_nu │   onal_n │ on       │          │     time │        │        │
-        │          │          │       │          │         │          │          │        m │       um │          │          │          │        │        │
-        ╞══════════╪══════════╪═══════╪══════════╪═════════╪══════════╪══════════╪══════════╪══════════╪══════════╪══════════╪══════════╪════════╪════════╡
-        │ QUERY    │     2600 │ 55658 │ NOERRO   │ ['qr',  │        1 │        5 │        0 │        1 │ {'name   │ [{'nam   │       44 │ Wed Ma │    143 │
-        │          │          │       │ R        │  'rd',  │          │          │          │          │ ': 'ww   │ e': 'w   │          │ r 18 1 │        │
-        │          │          │       │          │  'ra']  │          │          │          │          │ w.cnn.   │ ww.cnn   │          │ 2:20:5 │        │
-        │          │          │       │          │         │          │          │          │          │ com.',   │ .com.'   │          │ 9 PDT  │        │
-        │          │          │       │          │         │          │          │          │          │  'clas   │ , 'cla   │          │ 2020   │        │
-        │          │          │       │          │         │          │          │          │          │ s': 'I   │ ss': '   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │ N', 't   │ IN', '   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │ ype':    │ type':   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │ 'A'}     │  'CNAM   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ E', 't   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ tl': 1   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 47, 'd   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ata':    │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 'turne   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ r-tls.   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ map.fa   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ stly.n   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ et.'},   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │  {'nam   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ e': 't   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ urner-   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ tls.ma   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ p.fast   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ly.net   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ .', 'c   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ lass':   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │  'IN',   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │  'type   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ': 'A'   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ , 'ttl   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ': 5,    │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 'data'   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ : '151   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ .101.1   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ .67'},   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │  {'nam   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ e': 't   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ urner-   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ tls.ma   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ p.fast   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ly.net   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ .', 'c   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ lass':   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │  'IN',   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │  'type   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ': 'A'   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ , 'ttl   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ': 5,    │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 'data'   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ : '151   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ .101.6   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 5.67'}   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ , {'na   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ me': '   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ turner   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ -tls.m   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ap.fas   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ tly.ne   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ t.', '   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ class'   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ : 'IN'   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ , 'typ   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ e': 'A   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ', 'tt   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ l': 5,   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │  'data   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ': '15   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 1.101.   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 129.67   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ '}, {'   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ name':   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │  'turn   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ er-tls   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ .map.f   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ astly.   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ net.',   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │  'clas   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ s': 'I   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ N', 't   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ype':    │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 'A', '   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ttl':    │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 5, 'da   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ ta': '   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 151.10   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 1.193.   │          │        │        │
-        │          │          │       │          │         │          │          │          │          │          │ 67'}]    │          │        │        │
-        ╘══════════╧══════════╧═══════╧══════════╧═════════╧══════════╧══════════╧══════════╧══════════╧══════════╧══════════╧══════════╧════════╧════════╛''')
+        ╒═══════╤══════════╤══════════╤═════════╤══════════╤══════════╤══════════╤══════════╤══════════╤══════════╤══════════╤══════════╤════════╤════════╕
+        │    id │ opcode   │ status   │ flags   │   query_ │   answer │   author │   additi │ questi   │ answer   │   query_ │   server │ when   │   rcvd │
+        │       │          │          │         │      num │     _num │   ity_nu │   onal_n │ on       │          │     time │          │        │        │
+        │       │          │          │         │          │          │        m │       um │          │          │          │          │        │        │
+        ╞═══════╪══════════╪══════════╪═════════╪══════════╪══════════╪══════════╪══════════╪══════════╪══════════╪══════════╪══════════╪════════╪════════╡
+        │ 55658 │ QUERY    │ NOERRO   │ ['qr',  │        1 │        5 │        0 │        1 │ {'name   │ [{'nam   │       44 │     2600 │ Wed Ma │    143 │
+        │       │          │ R        │  'rd',  │          │          │          │          │ ': 'ww   │ e': 'w   │          │          │ r 18 1 │        │
+        │       │          │          │  'ra']  │          │          │          │          │ w.cnn.   │ ww.cnn   │          │          │ 2:20:5 │        │
+        │       │          │          │         │          │          │          │          │ com.',   │ .com.'   │          │          │ 9 PDT  │        │
+        │       │          │          │         │          │          │          │          │  'clas   │ , 'cla   │          │          │ 2020   │        │
+        │       │          │          │         │          │          │          │          │ s': 'I   │ ss': '   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │ N', 't   │ IN', '   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │ ype':    │ type':   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │ 'A'}     │  'CNAM   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ E', 't   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ tl': 1   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 47, 'd   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ata':    │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 'turne   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ r-tls.   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ map.fa   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ stly.n   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ et.'},   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │  {'nam   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ e': 't   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ urner-   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ tls.ma   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ p.fast   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ly.net   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ .', 'c   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ lass':   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │  'IN',   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │  'type   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ': 'A'   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ , 'ttl   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ': 5,    │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 'data'   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ : '151   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ .101.1   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ .67'},   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │  {'nam   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ e': 't   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ urner-   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ tls.ma   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ p.fast   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ly.net   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ .', 'c   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ lass':   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │  'IN',   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │  'type   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ': 'A'   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ , 'ttl   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ': 5,    │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 'data'   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ : '151   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ .101.6   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 5.67'}   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ , {'na   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ me': '   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ turner   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ -tls.m   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ap.fas   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ tly.ne   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ t.', '   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ class'   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ : 'IN'   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ , 'typ   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ e': 'A   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ', 'tt   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ l': 5,   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │  'data   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ': '15   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 1.101.   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 129.67   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ '}, {'   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ name':   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │  'turn   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ er-tls   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ .map.f   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ astly.   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ net.',   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │  'clas   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ s': 'I   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ N', 't   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ype':    │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 'A', '   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ttl':    │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 5, 'da   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ ta': '   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 151.10   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 1.193.   │          │          │        │        │
+        │       │          │          │         │          │          │          │          │          │ 67'}]    │          │          │        │        │
+        ╘═══════╧══════════╧══════════╧═════════╧══════════╧══════════╧══════════╧══════════╧══════════╧══════════╧══════════╧══════════╧════════╧════════╛''')
 
         self.assertEqual(jtbl.cli.make_table(data=stdin, columns=150), (self.SUCCESS, expected))
 
     def test_jc_dig_150cols_t(self):
         stdin = [{"id": 55658, "opcode": "QUERY", "status": "NOERROR", "flags": ["qr", "rd", "ra"], "query_num": 1, "answer_num": 5, "authority_num": 0, "additional_num": 1, "question": {"name": "www.cnn.com.", "class": "IN", "type": "A"}, "answer": [{"name": "www.cnn.com.", "class": "IN", "type": "CNAME", "ttl": 147, "data": "turner-tls.map.fastly.net."}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.1.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.65.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.129.67"}, {"name": "turner-tls.map.fastly.net.", "class": "IN", "type": "A", "ttl": 5, "data": "151.101.193.67"}], "query_time": 44, "server": "2600", "when": "Wed Mar 18 12:20:59 PDT 2020", "rcvd": 143}]
         expected = textwrap.dedent('''\
-        opcode    status      server     id  flags       query_nu    answer_n    authorit    addition  question    answer      query_ti  when       rcvd
-        --------  --------  --------  -----  --------  ----------  ----------  ----------  ----------  ----------  --------  ----------  -------  ------
-        QUERY     NOERROR       2600  55658  ['qr', '           1           5           0           1  {'name':    [{'name'          44  Wed Mar     143''')
+           id  opcode    status    flags       query_nu    answer_n    authorit    addition  question    answer      query_ti    server  when       rcvd
+        -----  --------  --------  --------  ----------  ----------  ----------  ----------  ----------  --------  ----------  --------  -------  ------
+        55658  QUERY     NOERROR   ['qr', '           1           5           0           1  {'name':    [{'name'          44      2600  Wed Mar     143''')
 
         self.assertEqual(jtbl.cli.make_table(data=stdin, truncate=True, columns=150), (self.SUCCESS, expected))
 
@@ -424,6 +424,28 @@ class MyTests(unittest.TestCase):
         | This is a long string that should not be truncated by the markdown table format. Lines should not be wrapped for markdown. |       123 | True      |           |''')
 
         self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns, nowrap=True, table_format='github'), (self.SUCCESS, expected))
+
+
+    def test_add_remove_fields(self):
+        stdin = [{"foo this is a very long long key":"this is a very very long string yes it is"},{"foo this is a very long long key":"medium length string","bar this is another very long string":"now is the time for all good men to come to the aide of their party"},{"baz is yet another long key name":"hello there how are you doing today? I am fine, thank you.","bar this is another very long string":"short string"}]
+        expected = textwrap.dedent('''\
+        ╒════════════════════════════════╤════════════════════════════════╤════════════════════════════════╕
+        │ foo this is a very long long   │ bar this is another very lon   │ baz is yet another long key    │
+        │  key                           │ g string                       │ name                           │
+        ╞════════════════════════════════╪════════════════════════════════╪════════════════════════════════╡
+        │ this is a very very long str   │                                │                                │
+        │ ing yes it is                  │                                │                                │
+        ├────────────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+        │ medium length string           │ now is the time for all good   │                                │
+        │                                │  men to come to the aide of    │                                │
+        │                                │ their party                    │                                │
+        ├────────────────────────────────┼────────────────────────────────┼────────────────────────────────┤
+        │                                │ short string                   │ hello there how are you doin   │
+        │                                │                                │ g today? I am fine, thank yo   │
+        │                                │                                │ u.                             │
+        ╘════════════════════════════════╧════════════════════════════════╧════════════════════════════════╛''')
+
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=100), (self.SUCCESS, expected))
 
 
 if __name__ == '__main__':

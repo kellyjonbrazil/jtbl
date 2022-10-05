@@ -60,7 +60,6 @@ def wrap(data, columns, table_format, truncate):
 
         table_format (string)   'simple' (for truncation) or 'grid' (for wrapping)
     """
-
     # find the length of the keys (headers) and longest values
     data_width = {}
     for entry in data:
@@ -80,6 +79,7 @@ def wrap(data, columns, table_format, truncate):
 
     total_width = sum(combined_total_list)
 
+    new_table = []
     if total_width > columns:
         # Find the best wrap_width based on the terminal size
         sorted_list = sorted(combined_total_list, reverse=True)
@@ -94,8 +94,7 @@ def wrap(data, columns, table_format, truncate):
 
         # truncate or wrap every wrap_width chars for all field values
         for entry in data:
-            delete_keys = []
-            add_keys = []
+            add_keys = {}
             for k, v in entry.items():
                 if v is None:
                     v = ''
@@ -103,25 +102,17 @@ def wrap(data, columns, table_format, truncate):
                 if truncate:
                     new_key = str(k)[0:wrap_width]
                     new_value = str(v)[0:wrap_width]
-                    if k != new_key or v != new_value:
-                        delete_keys.append(k)
-                        add_keys.append((new_key, new_value))
+                    add_keys[new_key] = new_value
 
                 else:
                     table_format = 'fancy_grid'
                     new_key = '\n'.join([str(k)[i:i + wrap_width] for i in range(0, len(str(k)), wrap_width)])
                     new_value = '\n'.join([str(v)[i:i + wrap_width] for i in range(0, len(str(v)), wrap_width)])
-                    if k != new_key or v != new_value:
-                        delete_keys.append(k)
-                        add_keys.append((new_key, new_value))
+                    add_keys[new_key] = new_value
 
-            for i in delete_keys:
-                del entry[i]
+            new_table.append(add_keys)
 
-            for i in add_keys:
-                entry[i[0]] = i[1]
-
-    return (data, table_format)
+    return (new_table or data, table_format)
 
 
 def get_json(json_data, columns=None):
@@ -181,25 +172,32 @@ def check_data(data=None, columns=0):
         return SUCCESS, data
 
 
+def get_headers(data):
+    """preserve field order by using dict.fromkeys()"""
+    headers = []
+
+    if isinstance(data, dict):
+        headers.append(data.keys())
+
+    elif isinstance(data, list):
+        for row in data:
+            if isinstance(row, dict):
+                headers.extend(row.keys())
+
+    header_dict = dict.fromkeys(headers)
+
+    return header_dict
+
+
 def make_csv_table(data=None, columns=0):
     succeeded, data = check_data(data=data, columns=columns)
     if succeeded:
         buffer = io.StringIO()
-        fieldnames = []
-
-        if isinstance(data, dict):
-            fieldnames.append(data.keys())
-
-        elif isinstance(data, list):
-            for row in data:
-                if isinstance(row, dict):
-                    fieldnames.extend(row.keys())
-
-        headers = dict.fromkeys(fieldnames)
+        headers = get_headers(data)
 
         writer = csv.DictWriter(
             buffer,
-            headers.keys(),
+            headers,
             restval='',
             extrasaction='raise',
             dialect='excel'
