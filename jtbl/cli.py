@@ -309,14 +309,8 @@ def main():
     if not succeeded:
         print_error(json_data, quiet=quiet)
 
-    if csv:
-        succeeded, result = make_csv_table(data=json_data, columns=columns)
-        if succeeded:
-            print(result)
-        else:
-            print_error(result, quiet=quiet)
-
-    elif rotate:
+    # Make and print the tables
+    if rotate:
         for idx, row in enumerate(json_data):
             rotated_data = []
             for k, v in row.items():
@@ -335,6 +329,13 @@ def main():
                 print()
             else:
                 print_error(result, quiet=quiet)
+
+    elif csv:
+        succeeded, result = make_csv_table(data=json_data, columns=columns)
+        if succeeded:
+            print(result)
+        else:
+            print_error(result, quiet=quiet)
 
     else:
         succeeded, result = make_table(data=json_data,
