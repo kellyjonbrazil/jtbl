@@ -185,21 +185,21 @@ def make_csv_table(data=None, columns=0):
     succeeded, data = check_data(data=data, columns=columns)
     if succeeded:
         buffer = io.StringIO()
-        fieldnames = set()
+        fieldnames = []
 
         if isinstance(data, dict):
-            fieldnames.update(data.keys())
+            fieldnames.append(data.keys())
 
         elif isinstance(data, list):
             for row in data:
                 if isinstance(row, dict):
-                    fieldnames.update(row.keys())
+                    fieldnames.extend(row.keys())
 
-        fieldnames = sorted(list(fieldnames))
+        headers = dict.fromkeys(fieldnames)
 
         writer = csv.DictWriter(
             buffer,
-            fieldnames,
+            headers.keys(),
             restval='',
             extrasaction='raise',
             dialect='excel'

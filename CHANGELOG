@@ -2,6 +2,7 @@ jtbl changelog
 
 20221004 v1.4.0
 - Add CSV (`-c`) and HTML (`-H`) table output options
+- Preserve column order as much as possible
 
 20220731 v1.3.2
 - Add `__main__.py` for `python -m jtbl` use cases
