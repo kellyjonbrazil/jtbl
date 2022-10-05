@@ -195,6 +195,8 @@ def make_csv_table(data=None, columns=0):
                 if isinstance(row, dict):
                     fieldnames.update(row.keys())
 
+        fieldnames = sorted(list(fieldnames))
+
         writer = csv.DictWriter(
             buffer,
             fieldnames,
