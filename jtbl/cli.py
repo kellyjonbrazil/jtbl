@@ -1,11 +1,14 @@
+import io
 import sys
 import signal
 import textwrap
+import csv
 import json
 import tabulate
 import shutil
 
-__version__ = '1.3.2'
+__version__ = '1.4.0'
+SUCCESS, ERROR = True, False
 
 
 def ctrlc(signum, frame):
@@ -28,6 +31,8 @@ def helptext():
         Usage:  <JSON Data> | jtbl [OPTIONS]
 
                 --cols=n   manually configure the terminal width
+                -c         CSV table output
+                -H         HTML table output
                 -m         markdown table output
                 -n         do not try to wrap if too wide for the terminal
                 -q         quiet - don't print error messages
@@ -123,8 +128,6 @@ def get_json(json_data, columns=None):
     """Accepts JSON or JSON Lines and returns a tuple of
        (success/error, list of dictionaries)
     """
-    SUCCESS, ERROR = True, False
-
     if not json_data or json_data.isspace():
         return (ERROR, 'jtbl:   Missing piped data\n')
 
@@ -155,21 +158,8 @@ def get_json(json_data, columns=None):
         return SUCCESS, data_list
 
 
-def make_table(data=None,
-               truncate=False,
-               nowrap=False,
-               columns=None,
-               table_format='simple',
-               rotate=False):
-    """
-    Generates the table from the JSON input.
-
-    Returns a tuple of ([SUCCESS | ERROR], result)
-        SUCCESS | ERROR (boolean)   SUCCESS (True) if no error, ERROR (False) if error encountered
-        result (string)             text string of the table result or error message
-    """
-    SUCCESS, ERROR = True, False
-
+def check_data(data=None, columns=0):
+    """Return (SUCCESS, data) if data can be processed. (ERROR, msg) if not"""
     # only process if there is data
     if data:
         try:
@@ -188,6 +178,61 @@ def make_table(data=None,
                        {str(data)[0:columns - 8]}
                        '''))
 
+        return SUCCESS, data
+
+
+def make_csv_table(data=None, columns=0):
+    succeeded, data = check_data(data=data, columns=columns)
+    if succeeded:
+        buffer = io.StringIO()
+        fieldnames = set()
+
+        if isinstance(data, dict):
+            fieldnames.update(data.keys())
+
+        elif isinstance(data, list):
+            for row in data:
+                if isinstance(row, dict):
+                    fieldnames.update(row.keys())
+
+        writer = csv.DictWriter(
+            buffer,
+            fieldnames,
+            restval='',
+            extrasaction='raise',
+            dialect='excel'
+        )
+
+        writer.writeheader()
+
+        if isinstance(data, dict):
+            data = [data]
+
+        if isinstance(data, list):
+            for row in data:
+                writer.writerow(row)
+
+        return (SUCCESS, buffer.getvalue())
+
+    else:
+        return (ERROR, data)
+
+
+def make_table(data=None,
+               truncate=False,
+               nowrap=False,
+               columns=None,
+               table_format='simple',
+               rotate=False):
+    """
+    Generates the table from the JSON input.
+
+    Returns a tuple of ([SUCCESS | ERROR], result)
+        SUCCESS | ERROR (boolean)   SUCCESS (True) if no error, ERROR (False) if error encountered
+        result (string)             text string of the table result or error message
+    """
+    succeeded, data = check_data(data=data, columns=columns)
+    if succeeded:
         if not nowrap:
             data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
 
@@ -199,7 +244,7 @@ def make_table(data=None,
         return (SUCCESS, tabulate.tabulate(data, headers=headers, tablefmt=table_format))
 
     else:
-        return (ERROR, '')
+        return (ERROR, data)
 
 
 def main():
@@ -228,6 +273,8 @@ def main():
                 helptext()
 
     markdown = 'm' in options
+    csv = 'c' in options
+    html = 'H' in options
     nowrap = 'n' in options
     quiet = 'q' in options
     rotate = 'r' in options
@@ -235,9 +282,14 @@ def main():
     version_info = 'v' in options
     helpme = 'h' in options
 
-    tbl_fmt = 'github' if markdown else 'simple'
+    if markdown:
+        tbl_fmt = 'github'
+    elif html:
+        tbl_fmt = 'html'
+    else:
+        tbl_fmt = 'simple'
 
-    if not rotate and markdown:
+    if not rotate and (markdown or html or csv):
         nowrap = True
 
     columns = None
@@ -253,22 +305,29 @@ def main():
     if helpme:
         helptext()
 
-    succeeeded, json_data = get_json(stdin, columns=columns)
-    if not succeeeded:
+    succeeded, json_data = get_json(stdin, columns=columns)
+    if not succeeded:
         print_error(json_data, quiet=quiet)
 
-    if rotate:
+    if csv:
+        succeeded, result = make_csv_table(data=json_data, columns=columns)
+        if succeeded:
+            print(result)
+        else:
+            print_error(result, quiet=quiet)
+
+    elif rotate:
         for idx, row in enumerate(json_data):
             rotated_data = []
             for k, v in row.items():
                 rotated_data.append({'key': k, 'value': v})
 
-            succeeeded, result = make_table(data=rotated_data,
-                                        truncate=truncate,
-                                        nowrap=nowrap,
-                                        columns=columns,
-                                        rotate=True)
-            if succeeeded:
+            succeeded, result = make_table(data=rotated_data,
+                                           truncate=truncate,
+                                           nowrap=nowrap,
+                                           columns=columns,
+                                           rotate=True)
+            if succeeded:
                 if len(json_data) > 1:
                     print(f'item: {idx}')
                     print('─' * columns)
@@ -278,13 +337,13 @@ def main():
                 print_error(result, quiet=quiet)
 
     else:
-        succeeeded, result = make_table(data=json_data,
-                                        truncate=truncate,
-                                        nowrap=nowrap,
-                                        columns=columns,
-                                        table_format=tbl_fmt)
+        succeeded, result = make_table(data=json_data,
+                                       truncate=truncate,
+                                       nowrap=nowrap,
+                                       columns=columns,
+                                       table_format=tbl_fmt)
 
-        if succeeeded:
+        if succeeded:
             print(result)
         else:
             print_error(result, quiet=quiet)
