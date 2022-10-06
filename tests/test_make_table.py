@@ -427,6 +427,7 @@ class MyTests(unittest.TestCase):
 
 
     def test_add_remove_fields(self):
+        """test with added and missing fields"""
         stdin = [{"foo this is a very long long key":"this is a very very long string yes it is"},{"foo this is a very long long key":"medium length string","bar this is another very long string":"now is the time for all good men to come to the aide of their party"},{"baz is yet another long key name":"hello there how are you doing today? I am fine, thank you.","bar this is another very long string":"short string"}]
         expected = textwrap.dedent('''\
         ╒════════════════════════════════╤════════════════════════════════╤════════════════════════════════╕
@@ -446,6 +447,196 @@ class MyTests(unittest.TestCase):
         ╘════════════════════════════════╧════════════════════════════════╧════════════════════════════════╛''')
 
         self.assertEqual(jtbl.cli.make_table(data=stdin, columns=100), (self.SUCCESS, expected))
+
+
+    def test_csv(self):
+        """test csv output"""
+        stdin = [{"LatD":"41","LatM":"5","LatS":"59","NS":"N","LonD":"80","LonM":"39","LonS":"0","EW":"W","City":"Youngstown","State":"OH"},{"LatD":"42","LatM":"52","LatS":"48","NS":"N","LonD":"97","LonM":"23","LonS":"23","EW":"W","City":"Yankton","State":"SD"},{"LatD":"46","LatM":"35","LatS":"59","NS":"N","LonD":"120","LonM":"30","LonS":"36","EW":"W","City":"Yakima","State":"WA"},{"LatD":"42","LatM":"16","LatS":"12","NS":"N","LonD":"71","LonM":"48","LonS":"0","EW":"W","City":"Worcester","State":"MA"},{"LatD":"43","LatM":"37","LatS":"48","NS":"N","LonD":"89","LonM":"46","LonS":"11","EW":"W","City":"Wisconsin Dells","State":"WI"},{"LatD":"36","LatM":"5","LatS":"59","NS":"N","LonD":"80","LonM":"15","LonS":"0","EW":"W","City":"Winston-Salem","State":"NC"},{"LatD":"49","LatM":"52","LatS":"48","NS":"N","LonD":"97","LonM":"9","LonS":"0","EW":"W","City":"Winnipeg","State":"MB"},{"LatD":"39","LatM":"11","LatS":"23","NS":"N","LonD":"78","LonM":"9","LonS":"36","EW":"W","City":"Winchester","State":"VA"},{"LatD":"34","LatM":"14","LatS":"24","NS":"N","LonD":"77","LonM":"55","LonS":"11","EW":"W","City":"Wilmington","State":"NC"}]
+        expected = textwrap.dedent('''\
+        LatD,LatM,LatS,NS,LonD,LonM,LonS,EW,City,State\r
+        41,5,59,N,80,39,0,W,Youngstown,OH\r
+        42,52,48,N,97,23,23,W,Yankton,SD\r
+        46,35,59,N,120,30,36,W,Yakima,WA\r
+        42,16,12,N,71,48,0,W,Worcester,MA\r
+        43,37,48,N,89,46,11,W,Wisconsin Dells,WI\r
+        36,5,59,N,80,15,0,W,Winston-Salem,NC\r
+        49,52,48,N,97,9,0,W,Winnipeg,MB\r
+        39,11,23,N,78,9,36,W,Winchester,VA\r
+        34,14,24,N,77,55,11,W,Wilmington,NC\r
+        ''')
+
+        self.assertEqual(jtbl.cli.make_csv_table(data=stdin), (self.SUCCESS, expected))
+
+
+    def test_html(self):
+        """test html output"""
+        stdin = [{"LatD":"41","LatM":"5","LatS":"59","NS":"N","LonD":"80","LonM":"39","LonS":"0","EW":"W","City":"Youngstown","State":"OH"},{"LatD":"42","LatM":"52","LatS":"48","NS":"N","LonD":"97","LonM":"23","LonS":"23","EW":"W","City":"Yankton","State":"SD"},{"LatD":"46","LatM":"35","LatS":"59","NS":"N","LonD":"120","LonM":"30","LonS":"36","EW":"W","City":"Yakima","State":"WA"},{"LatD":"42","LatM":"16","LatS":"12","NS":"N","LonD":"71","LonM":"48","LonS":"0","EW":"W","City":"Worcester","State":"MA"},{"LatD":"43","LatM":"37","LatS":"48","NS":"N","LonD":"89","LonM":"46","LonS":"11","EW":"W","City":"Wisconsin Dells","State":"WI"},{"LatD":"36","LatM":"5","LatS":"59","NS":"N","LonD":"80","LonM":"15","LonS":"0","EW":"W","City":"Winston-Salem","State":"NC"},{"LatD":"49","LatM":"52","LatS":"48","NS":"N","LonD":"97","LonM":"9","LonS":"0","EW":"W","City":"Winnipeg","State":"MB"},{"LatD":"39","LatM":"11","LatS":"23","NS":"N","LonD":"78","LonM":"9","LonS":"36","EW":"W","City":"Winchester","State":"VA"},{"LatD":"34","LatM":"14","LatS":"24","NS":"N","LonD":"77","LonM":"55","LonS":"11","EW":"W","City":"Wilmington","State":"NC"}]
+
+        expected = textwrap.dedent('''\
+        <table>
+        <thead>
+        <tr><th style="text-align: right;">  LatD</th><th style="text-align: right;">  LatM</th><th style="text-align: right;">  LatS</th><th>NS  </th><th style="text-align: right;">  LonD</th><th style="text-align: right;">  LonM</th><th style="text-align: right;">  LonS</th><th>EW  </th><th>City           </th><th>State  </th></tr>
+        </thead>
+        <tbody>
+        <tr><td style="text-align: right;">    41</td><td style="text-align: right;">     5</td><td style="text-align: right;">    59</td><td>N   </td><td style="text-align: right;">    80</td><td style="text-align: right;">    39</td><td style="text-align: right;">     0</td><td>W   </td><td>Youngstown     </td><td>OH     </td></tr>
+        <tr><td style="text-align: right;">    42</td><td style="text-align: right;">    52</td><td style="text-align: right;">    48</td><td>N   </td><td style="text-align: right;">    97</td><td style="text-align: right;">    23</td><td style="text-align: right;">    23</td><td>W   </td><td>Yankton        </td><td>SD     </td></tr>
+        <tr><td style="text-align: right;">    46</td><td style="text-align: right;">    35</td><td style="text-align: right;">    59</td><td>N   </td><td style="text-align: right;">   120</td><td style="text-align: right;">    30</td><td style="text-align: right;">    36</td><td>W   </td><td>Yakima         </td><td>WA     </td></tr>
+        <tr><td style="text-align: right;">    42</td><td style="text-align: right;">    16</td><td style="text-align: right;">    12</td><td>N   </td><td style="text-align: right;">    71</td><td style="text-align: right;">    48</td><td style="text-align: right;">     0</td><td>W   </td><td>Worcester      </td><td>MA     </td></tr>
+        <tr><td style="text-align: right;">    43</td><td style="text-align: right;">    37</td><td style="text-align: right;">    48</td><td>N   </td><td style="text-align: right;">    89</td><td style="text-align: right;">    46</td><td style="text-align: right;">    11</td><td>W   </td><td>Wisconsin Dells</td><td>WI     </td></tr>
+        <tr><td style="text-align: right;">    36</td><td style="text-align: right;">     5</td><td style="text-align: right;">    59</td><td>N   </td><td style="text-align: right;">    80</td><td style="text-align: right;">    15</td><td style="text-align: right;">     0</td><td>W   </td><td>Winston-Salem  </td><td>NC     </td></tr>
+        <tr><td style="text-align: right;">    49</td><td style="text-align: right;">    52</td><td style="text-align: right;">    48</td><td>N   </td><td style="text-align: right;">    97</td><td style="text-align: right;">     9</td><td style="text-align: right;">     0</td><td>W   </td><td>Winnipeg       </td><td>MB     </td></tr>
+        <tr><td style="text-align: right;">    39</td><td style="text-align: right;">    11</td><td style="text-align: right;">    23</td><td>N   </td><td style="text-align: right;">    78</td><td style="text-align: right;">     9</td><td style="text-align: right;">    36</td><td>W   </td><td>Winchester     </td><td>VA     </td></tr>
+        <tr><td style="text-align: right;">    34</td><td style="text-align: right;">    14</td><td style="text-align: right;">    24</td><td>N   </td><td style="text-align: right;">    77</td><td style="text-align: right;">    55</td><td style="text-align: right;">    11</td><td>W   </td><td>Wilmington     </td><td>NC     </td></tr>
+        </tbody>
+        </table>''')
+
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns, nowrap=True, table_format='html'), (self.SUCCESS, expected))
+
+
+    def test_rotate(self):
+        """test html output"""
+        stdin = [{"LatD":"41","LatM":"5","LatS":"59","NS":"N","LonD":"80","LonM":"39","LonS":"0","EW":"W","City":"Youngstown","State":"OH"},{"LatD":"42","LatM":"52","LatS":"48","NS":"N","LonD":"97","LonM":"23","LonS":"23","EW":"W","City":"Yankton","State":"SD"},{"LatD":"46","LatM":"35","LatS":"59","NS":"N","LonD":"120","LonM":"30","LonS":"36","EW":"W","City":"Yakima","State":"WA"},{"LatD":"42","LatM":"16","LatS":"12","NS":"N","LonD":"71","LonM":"48","LonS":"0","EW":"W","City":"Worcester","State":"MA"},{"LatD":"43","LatM":"37","LatS":"48","NS":"N","LonD":"89","LonM":"46","LonS":"11","EW":"W","City":"Wisconsin Dells","State":"WI"},{"LatD":"36","LatM":"5","LatS":"59","NS":"N","LonD":"80","LonM":"15","LonS":"0","EW":"W","City":"Winston-Salem","State":"NC"},{"LatD":"49","LatM":"52","LatS":"48","NS":"N","LonD":"97","LonM":"9","LonS":"0","EW":"W","City":"Winnipeg","State":"MB"},{"LatD":"39","LatM":"11","LatS":"23","NS":"N","LonD":"78","LonM":"9","LonS":"36","EW":"W","City":"Winchester","State":"VA"},{"LatD":"34","LatM":"14","LatS":"24","NS":"N","LonD":"77","LonM":"55","LonS":"11","EW":"W","City":"Wilmington","State":"NC"}]
+
+        expected = textwrap.dedent('''\
+        item: 0
+        ────────────────────────────────────────────────────────────────────────────────
+        LatD   41
+        LatM   5
+        LatS   59
+        NS     N
+        LonD   80
+        LonM   39
+        LonS   0
+        EW     W
+        City   Youngstown
+        State  OH
+
+        item: 1
+        ────────────────────────────────────────────────────────────────────────────────
+        LatD   42
+        LatM   52
+        LatS   48
+        NS     N
+        LonD   97
+        LonM   23
+        LonS   23
+        EW     W
+        City   Yankton
+        State  SD
+
+        item: 2
+        ────────────────────────────────────────────────────────────────────────────────
+        LatD   46
+        LatM   35
+        LatS   59
+        NS     N
+        LonD   120
+        LonM   30
+        LonS   36
+        EW     W
+        City   Yakima
+        State  WA
+
+        item: 3
+        ────────────────────────────────────────────────────────────────────────────────
+        LatD   42
+        LatM   16
+        LatS   12
+        NS     N
+        LonD   71
+        LonM   48
+        LonS   0
+        EW     W
+        City   Worcester
+        State  MA
+
+        item: 4
+        ────────────────────────────────────────────────────────────────────────────────
+        LatD   43
+        LatM   37
+        LatS   48
+        NS     N
+        LonD   89
+        LonM   46
+        LonS   11
+        EW     W
+        City   Wisconsin Dells
+        State  WI
+
+        item: 5
+        ────────────────────────────────────────────────────────────────────────────────
+        LatD   36
+        LatM   5
+        LatS   59
+        NS     N
+        LonD   80
+        LonM   15
+        LonS   0
+        EW     W
+        City   Winston-Salem
+        State  NC
+
+        item: 6
+        ────────────────────────────────────────────────────────────────────────────────
+        LatD   49
+        LatM   52
+        LatS   48
+        NS     N
+        LonD   97
+        LonM   9
+        LonS   0
+        EW     W
+        City   Winnipeg
+        State  MB
+
+        item: 7
+        ────────────────────────────────────────────────────────────────────────────────
+        LatD   39
+        LatM   11
+        LatS   23
+        NS     N
+        LonD   78
+        LonM   9
+        LonS   36
+        EW     W
+        City   Winchester
+        State  VA
+
+        item: 8
+        ────────────────────────────────────────────────────────────────────────────────
+        LatD   34
+        LatM   14
+        LatS   24
+        NS     N
+        LonD   77
+        LonM   55
+        LonS   11
+        EW     W
+        City   Wilmington
+        State  NC
+        ''')
+
+        self.assertEqual(jtbl.cli.make_rotate_table(data=stdin, columns=self.columns, nowrap=True, rotate=True), (self.SUCCESS, expected))
+
+
+    def test_rotate_single_item(self):
+        """test html output"""
+        stdin = [{"LatD":"41","LatM":"5","LatS":"59","NS":"N","LonD":"80","LonM":"39","LonS":"0","EW":"W","City":"Youngstown","State":"OH"}]
+
+        expected = textwrap.dedent('''\
+        LatD   41
+        LatM   5
+        LatS   59
+        NS     N
+        LonD   80
+        LonM   39
+        LonS   0
+        EW     W
+        City   Youngstown
+        State  OH
+        ''')
+
+        self.assertEqual(jtbl.cli.make_rotate_table(data=stdin, columns=self.columns, nowrap=True, rotate=True), (self.SUCCESS, expected))
 
 
 if __name__ == '__main__':

@@ -189,6 +189,40 @@ def get_headers(data):
     return header_dict
 
 
+def make_rotate_table(data=None,
+                      truncate=False,
+                      nowrap=False,
+                      columns=None,
+                      table_format='simple',
+                      rotate=False):
+    """generates a rotated table"""
+    succeeded, data = check_data(data=data, columns=columns)
+
+    if succeeded:
+        table = ''
+        for idx, row in enumerate(data):
+            rotated_data = []
+            for k, v in row.items():
+                rotated_data.append({'key': k, 'value': v})
+
+            succeeded, result = make_table(data=rotated_data,
+                                            truncate=truncate,
+                                            nowrap=nowrap,
+                                            columns=columns,
+                                            table_format=table_format,
+                                            rotate=rotate)
+            if succeeded:
+                if len(data) > 1:
+                    table += f'item: {idx}\n'
+                    table += '─' * columns + '\n'
+                table += result + '\n\n'
+
+        return (SUCCESS, table[:-1])
+
+    else:
+        return (ERROR, data)
+
+
 def make_csv_table(data=None, columns=0):
     succeeded, data = check_data(data=data, columns=columns)
     if succeeded:
@@ -311,24 +345,15 @@ def main():
 
     # Make and print the tables
     if rotate:
-        for idx, row in enumerate(json_data):
-            rotated_data = []
-            for k, v in row.items():
-                rotated_data.append({'key': k, 'value': v})
-
-            succeeded, result = make_table(data=rotated_data,
-                                           truncate=truncate,
-                                           nowrap=nowrap,
-                                           columns=columns,
-                                           rotate=True)
-            if succeeded:
-                if len(json_data) > 1:
-                    print(f'item: {idx}')
-                    print('─' * columns)
-                print(result)
-                print()
-            else:
-                print_error(result, quiet=quiet)
+        succeeded, result = make_rotate_table(data=json_data,
+                                              truncate=truncate,
+                                              nowrap=nowrap,
+                                              columns=columns,
+                                              rotate=True)
+        if succeeded:
+            print(result)
+        else:
+            print_error(result, quiet=quiet)
 
     elif csv:
         succeeded, result = make_csv_table(data=json_data, columns=columns)
