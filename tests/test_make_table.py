@@ -30,23 +30,11 @@ class MyTests(unittest.TestCase):
 
     def test_null_string(self):
         stdin = [None]
-        expected = textwrap.dedent('''\
-        jtbl:  Cannot represent this part of the JSON Object as a table.
-               (Could be an Element, an Array, or Null data instead of an Object):
-               [null]
-        ''')
-
-        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns), (self.ERROR, expected))
+        self.assertRaises(AttributeError, jtbl.cli.make_table, data=stdin, columns=self.columns)
 
     def test_array_input(self):
         stdin = ["value1", "value2", "value3"]
-        expected = textwrap.dedent('''\
-        jtbl:  Cannot represent this part of the JSON Object as a table.
-               (Could be an Element, an Array, or Null data instead of an Object):
-               ["value1", "value2", "value3"]
-        ''')
-
-        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns), (self.ERROR, expected))
+        self.assertRaises(AttributeError, jtbl.cli.make_table, data=stdin, columns=self.columns)
 
     def test_deep_nest(self):
         stdin = [{"this":{"is":{"a":{"deeply":{"nested":{"structure":"value1","item2":"value2"}}}}}}]

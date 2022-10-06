@@ -55,10 +55,10 @@ def wrap(data, columns, table_format, truncate):
     Wrap or truncate the data to fit the terminal width.
 
     Returns a tuple of (data, table_format)
-        data (dictionary)       a modified dictionary with wrapped or truncated string values.
-                                wrapping is achieved by inserting \n characters into the value strings.
+        data (list)     a modified list of dictionies with wrapped or truncated string values.
+                        wrapping is achieved by inserting \n characters into the value strings.
 
-        table_format (string)   'simple' (for truncation) or 'grid' (for wrapping)
+        table_format (string)   'simple' (for truncation) or 'fancy_grid' (for wrapping)
     """
     # find the length of the keys (headers) and longest values
     data_width = {}
@@ -173,7 +173,7 @@ def check_data(data=None, columns=0):
 
 
 def get_headers(data):
-    """preserve field order by using dict.fromkeys()"""
+    """scan the data and return a dictionary of all of the headers in order"""
     headers = []
 
     if isinstance(data, dict):
@@ -184,101 +184,93 @@ def get_headers(data):
             if isinstance(row, dict):
                 headers.extend(row.keys())
 
+    # preserve field order by using dict.fromkeys()
     header_dict = dict.fromkeys(headers)
 
     return header_dict
 
 
-def make_rotate_table(data=None,
-                      truncate=False,
-                      nowrap=False,
-                      columns=None,
-                      table_format='simple',
-                      rotate=False):
+def make_rotate_table(
+    data=None,
+    truncate=False,
+    nowrap=False,
+    columns=None,
+    table_format='simple',
+    rotate=False
+):
     """generates a rotated table"""
-    succeeded, data = check_data(data=data, columns=columns)
+    table = ''
+    for idx, row in enumerate(data):
+        rotated_data = []
+        for k, v in row.items():
+            rotated_data.append({'key': k, 'value': v})
 
-    if succeeded:
-        table = ''
-        for idx, row in enumerate(data):
-            rotated_data = []
-            for k, v in row.items():
-                rotated_data.append({'key': k, 'value': v})
-
-            succeeded, result = make_table(data=rotated_data,
-                                            truncate=truncate,
-                                            nowrap=nowrap,
-                                            columns=columns,
-                                            table_format=table_format,
-                                            rotate=rotate)
-            if succeeded:
-                if len(data) > 1:
-                    table += f'item: {idx}\n'
-                    table += '─' * columns + '\n'
-                table += result + '\n\n'
-
-        return (SUCCESS, table[:-1])
-
-    else:
-        return (ERROR, data)
-
-
-def make_csv_table(data=None, columns=0):
-    succeeded, data = check_data(data=data, columns=columns)
-    if succeeded:
-        buffer = io.StringIO()
-        headers = get_headers(data)
-
-        writer = csv.DictWriter(
-            buffer,
-            headers,
-            restval='',
-            extrasaction='raise',
-            dialect='excel'
+        succeeded, result = make_table(
+            data=rotated_data,
+            truncate=truncate,
+            nowrap=nowrap,
+            columns=columns,
+            table_format=table_format,
+            rotate=rotate
         )
 
-        writer.writeheader()
+        if succeeded:
+            if len(data) > 1:
+                table += f'item: {idx}\n'
+                table += '─' * columns + '\n'
+            table += result + '\n\n'
 
-        if isinstance(data, dict):
-            data = [data]
-
-        if isinstance(data, list):
-            for row in data:
-                writer.writerow(row)
-
-        return (SUCCESS, buffer.getvalue())
-
-    else:
-        return (ERROR, data)
+    return (SUCCESS, table[:-1])
 
 
-def make_table(data=None,
-               truncate=False,
-               nowrap=False,
-               columns=None,
-               table_format='simple',
-               rotate=False):
-    """
-    Generates the table from the JSON input.
+def make_csv_table(data=None):
+    """generate csv table"""
+    buffer = io.StringIO()
+    headers = get_headers(data)
 
-    Returns a tuple of ([SUCCESS | ERROR], result)
-        SUCCESS | ERROR (boolean)   SUCCESS (True) if no error, ERROR (False) if error encountered
-        result (string)             text string of the table result or error message
-    """
-    succeeded, data = check_data(data=data, columns=columns)
-    if succeeded:
-        if not nowrap:
-            data, table_format = wrap(data=data, columns=columns, table_format=table_format, truncate=truncate)
+    writer = csv.DictWriter(
+        buffer,
+        headers,
+        restval='',
+        extrasaction='raise',
+        dialect='excel'
+    )
 
-        headers = 'keys'
-        if rotate:
-            table_format = 'plain'
-            headers = ''
+    writer.writeheader()
 
-        return (SUCCESS, tabulate.tabulate(data, headers=headers, tablefmt=table_format))
+    if isinstance(data, dict):
+        data = [data]
 
-    else:
-        return (ERROR, data)
+    if isinstance(data, list):
+        for row in data:
+            writer.writerow(row)
+
+    return (SUCCESS, buffer.getvalue())
+
+
+def make_table(
+    data=None,
+    truncate=False,
+    nowrap=False,
+    columns=None,
+    table_format='simple',
+    rotate=False
+):
+    """Generate simple or fancy table"""
+    if not nowrap:
+        data, table_format = wrap(
+            data=data,
+            columns=columns,
+            table_format=table_format,
+            truncate=truncate
+        )
+
+    headers = 'keys'
+    if rotate:
+        table_format = 'plain'
+        headers = ''
+
+    return (SUCCESS, tabulate.tabulate(data, headers=headers, tablefmt=table_format))
 
 
 def main():
@@ -306,9 +298,9 @@ def main():
             except Exception:
                 helptext()
 
-    markdown = 'm' in options
     csv = 'c' in options
     html = 'H' in options
+    markdown = 'm' in options
     nowrap = 'n' in options
     quiet = 'q' in options
     rotate = 'r' in options
@@ -343,31 +335,41 @@ def main():
     if not succeeded:
         print_error(json_data, quiet=quiet)
 
+    succeeded, json_data = check_data(json_data, columns=columns)
+    if not succeeded:
+        print_error(json_data, quiet=quiet)
+
     # Make and print the tables
     if rotate:
-        succeeded, result = make_rotate_table(data=json_data,
-                                              truncate=truncate,
-                                              nowrap=nowrap,
-                                              columns=columns,
-                                              rotate=True)
+        succeeded, result = make_rotate_table(
+            data=json_data,
+            truncate=truncate,
+            nowrap=nowrap,
+            columns=columns,
+            rotate=True
+        )
+
         if succeeded:
             print(result)
         else:
             print_error(result, quiet=quiet)
 
     elif csv:
-        succeeded, result = make_csv_table(data=json_data, columns=columns)
+        succeeded, result = make_csv_table(data=json_data)
+
         if succeeded:
             print(result)
         else:
             print_error(result, quiet=quiet)
 
     else:
-        succeeded, result = make_table(data=json_data,
-                                       truncate=truncate,
-                                       nowrap=nowrap,
-                                       columns=columns,
-                                       table_format=tbl_fmt)
+        succeeded, result = make_table(
+            data=json_data,
+            truncate=truncate,
+            nowrap=nowrap,
+            columns=columns,
+            table_format=tbl_fmt
+        )
 
         if succeeded:
             print(result)
