@@ -7,7 +7,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.4.0'
+__version__ = '1.5.0'
 SUCCESS, ERROR = True, False
 
 
