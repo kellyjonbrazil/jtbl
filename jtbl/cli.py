@@ -7,7 +7,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.4.0'
+__version__ = '1.5.0'
 SUCCESS, ERROR = True, False
 
 
@@ -137,8 +137,9 @@ def get_json(json_data, columns=None):
         data_list = []
         for i, jsonline in enumerate(data):
             try:
-                entry = json.loads(jsonline)
-                data_list.append(entry)
+                if jsonline.strip():
+                    entry = json.loads(jsonline)
+                    data_list.append(entry)
             except Exception as e:
                 # can't parse the data. Throw a nice message and quit
                 return (ERROR, textwrap.dedent(f'''\

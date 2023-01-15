@@ -1,5 +1,8 @@
 jtbl changelog
 
+20230114 v1.5.0
+- Be more tolerant of loading JSON Lines with blank lines and whitespace
+
 20221006 v1.4.0
 - Add CSV (`-c`) table output option
 - Add HTML (`-H`) table output option
