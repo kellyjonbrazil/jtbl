@@ -271,7 +271,7 @@ def make_table(
         table_format = 'plain'
         headers = ''
 
-    return (SUCCESS, tabulate.tabulate(data, headers=headers, tablefmt=table_format))
+    return (SUCCESS, tabulate.tabulate(data, headers=headers, tablefmt=table_format, floatfmt=''))
 
 
 def main():
