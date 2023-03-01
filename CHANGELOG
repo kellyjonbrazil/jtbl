@@ -1,5 +1,8 @@
 jtbl changelog
 
+20230228 v1.5.1
+- Preserve long float formatting
+
 20230114 v1.5.0
 - Be more tolerant of loading JSON Lines with blank lines and whitespace
 

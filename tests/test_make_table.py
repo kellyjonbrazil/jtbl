@@ -329,6 +329,11 @@ class MyTests(unittest.TestCase):
 
         self.assertEqual(jtbl.cli.make_table(data=stdin, columns=80), (self.SUCCESS, expected))
 
+    def test_float_format(self):
+        stdin = [{"a": 1000000, "b": 1000000.1}]
+        expected = '      a          b\n-------  ---------\n1000000  1000000.1'
+
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=80), (self.SUCCESS, expected))
 
     def test_json_lines(self):
         """test JSON Lines data"""
