@@ -7,7 +7,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.5.1'
+__version__ = '1.5.2'
 SUCCESS, ERROR = True, False
 
 
@@ -171,6 +171,11 @@ def check_data(data=None, columns=0):
                        '''))
 
         return SUCCESS, data
+
+    if data == []:
+        return SUCCESS, ''
+
+    return ERROR, data
 
 
 def get_headers(data):

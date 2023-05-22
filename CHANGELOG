@@ -1,5 +1,8 @@
 jtbl changelog
 
+20230522 v1.5.2
+- Fix output for empty array
+
 20230228 v1.5.1
 - Preserve long float formatting
 

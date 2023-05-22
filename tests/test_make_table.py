@@ -9,6 +9,16 @@ class MyTests(unittest.TestCase):
         self.SUCCESS, self.ERROR = True, False
         self.columns = 80
 
+    def test_empty_dict(self):
+        stdin = {}
+        expected = ''
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns), (self.SUCCESS, expected))
+
+    def test_empty_list(self):
+        stdin = []
+        expected = ''
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns), (self.SUCCESS, expected))
+
     def test_simple_key_value(self):
         stdin = [{"key": "value"}]
         expected = textwrap.dedent('''\
