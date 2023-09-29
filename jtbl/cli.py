@@ -34,6 +34,7 @@ def helptext():
                 -c         CSV table output
                 -H         HTML table output
                 -m         markdown table output
+                -f         fancy table output
                 -n         do not try to wrap if too wide for the terminal
                 -q         quiet - don't print error messages
                 -r         rotate table output
@@ -307,6 +308,7 @@ def main():
     csv = 'c' in options
     html = 'H' in options
     markdown = 'm' in options
+    fancy_grid = 'f' in options
     nowrap = 'n' in options
     quiet = 'q' in options
     rotate = 'r' in options
@@ -318,6 +320,8 @@ def main():
         tbl_fmt = 'github'
     elif html:
         tbl_fmt = 'html'
+    elif fancy_grid:
+        tbl_fmt = 'fancy_grid'
     else:
         tbl_fmt = 'simple'
 
