@@ -9,6 +9,16 @@ class MyTests(unittest.TestCase):
         self.SUCCESS, self.ERROR = True, False
         self.columns = 80
 
+    def test_empty_dict(self):
+        stdin = {}
+        expected = ''
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns), (self.SUCCESS, expected))
+
+    def test_empty_list(self):
+        stdin = []
+        expected = ''
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns), (self.SUCCESS, expected))
+
     def test_simple_key_value(self):
         stdin = [{"key": "value"}]
         expected = textwrap.dedent('''\
@@ -329,6 +339,11 @@ class MyTests(unittest.TestCase):
 
         self.assertEqual(jtbl.cli.make_table(data=stdin, columns=80), (self.SUCCESS, expected))
 
+    def test_float_format(self):
+        stdin = [{"a": 1000000, "b": 1000000.1}]
+        expected = '      a          b\n-------  ---------\n1000000  1000000.1'
+
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=80), (self.SUCCESS, expected))
 
     def test_json_lines(self):
         """test JSON Lines data"""

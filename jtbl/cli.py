@@ -7,7 +7,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.5.0'
+__version__ = '1.5.2'
 SUCCESS, ERROR = True, False
 
 
@@ -172,6 +172,11 @@ def check_data(data=None, columns=0):
 
         return SUCCESS, data
 
+    if data == []:
+        return SUCCESS, ''
+
+    return ERROR, data
+
 
 def get_headers(data):
     """scan the data and return a dictionary of all of the headers in order"""
@@ -271,7 +276,7 @@ def make_table(
         table_format = 'plain'
         headers = ''
 
-    return (SUCCESS, tabulate.tabulate(data, headers=headers, tablefmt=table_format))
+    return (SUCCESS, tabulate.tabulate(data, headers=headers, tablefmt=table_format, floatfmt=''))
 
 
 def main():
