@@ -55,8 +55,8 @@ $ <JSON Data> | jtbl [OPTIONS]
 ### Options
 - `--cols=n` manually configure the terminal width
 - `-c` CSV table output
-- `-h` prints help information
 - `-f` fancy table output
+- `-h` help - prints help information
 - `-H` HTML table output
 - `-m` markdown table output
 - `-n` no-wrap - no data wrapping if too long for the terminal width (overrides `--cols` and `-t`)
