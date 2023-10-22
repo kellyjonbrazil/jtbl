@@ -55,14 +55,15 @@ $ <JSON Data> | jtbl [OPTIONS]
 ### Options
 - `--cols=n` manually configure the terminal width
 - `-c` CSV table output
+- `-f` fancy table output
+- `-h` help - prints help information
 - `-H` HTML table output
 - `-m` markdown table output
-- `-n` no data wrapping if too long for the terminal width (overrides `--cols` and `-t`)
+- `-n` no-wrap - no data wrapping if too long for the terminal width (overrides `--cols` and `-t`)
 - `-q` quiet - don't print error messages to STDERR
 - `-r` rotate the data (each row turns into a table of key/value pairs)
 - `-t` truncate data instead of wrapping if too long for the terminal width
 - `-v` prints version information
-- `-h` prints help information
 
 ## Compatible JSON Formats
 `jtbl` works best with a shallow array of JSON objects. Each object should have a few elements that will be turned into table columns. Fortunately, this is how many APIs present their data.

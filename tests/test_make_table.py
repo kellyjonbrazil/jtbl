@@ -495,6 +495,24 @@ class MyTests(unittest.TestCase):
 
         self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns, nowrap=True, table_format='html'), (self.SUCCESS, expected))
 
+    def test_fancy(self):
+        """test fancy output with -f"""
+        stdin = [{"name":"www.cnn.com.","class":"IN","type":"CNAME","ttl":147,"data":"turner-tls.map.fastly.net."},{"name":"turner-tls.map.fastly.net.","class":"IN","type":"A","ttl":5,"data":"151.101.1.67"},{"name":"turner-tls.map.fastly.net.","class":"IN","type":"A","ttl":5,"data":"151.101.65.67"},{"name":"turner-tls.map.fastly.net.","class":"IN","type":"A","ttl":5,"data":"151.101.129.67"},{"name":"turner-tls.map.fastly.net.","class":"IN","type":"A","ttl":5,"data":"151.101.193.67"}]
+        expected = textwrap.dedent('''\
+        ╒════════════════════════════╤═════════╤════════╤═══════╤════════════════════════════╕
+        │ name                       │ class   │ type   │   ttl │ data                       │
+        ╞════════════════════════════╪═════════╪════════╪═══════╪════════════════════════════╡
+        │ www.cnn.com.               │ IN      │ CNAME  │   147 │ turner-tls.map.fastly.net. │
+        ├────────────────────────────┼─────────┼────────┼───────┼────────────────────────────┤
+        │ turner-tls.map.fastly.net. │ IN      │ A      │     5 │ 151.101.1.67               │
+        ├────────────────────────────┼─────────┼────────┼───────┼────────────────────────────┤
+        │ turner-tls.map.fastly.net. │ IN      │ A      │     5 │ 151.101.65.67              │
+        ├────────────────────────────┼─────────┼────────┼───────┼────────────────────────────┤
+        │ turner-tls.map.fastly.net. │ IN      │ A      │     5 │ 151.101.129.67             │
+        ├────────────────────────────┼─────────┼────────┼───────┼────────────────────────────┤
+        │ turner-tls.map.fastly.net. │ IN      │ A      │     5 │ 151.101.193.67             │
+        ╘════════════════════════════╧═════════╧════════╧═══════╧════════════════════════════╛''')
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns, nowrap=True, table_format='fancy_grid'), (self.SUCCESS, expected))
 
     def test_rotate(self):
         """test html output"""

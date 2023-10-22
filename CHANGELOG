@@ -1,5 +1,8 @@
 jtbl changelog
 
+20231022 v1.5.3
+- Add `-f` option for fancy table output
+
 20230522 v1.5.2
 - Fix output for empty array
 

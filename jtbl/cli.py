@@ -7,7 +7,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.5.2'
+__version__ = '1.5.3'
 SUCCESS, ERROR = True, False
 
 
@@ -32,14 +32,15 @@ def helptext():
 
                 --cols=n   manually configure the terminal width
                 -c         CSV table output
+                -f         fancy table output
+                -h         help
                 -H         HTML table output
                 -m         markdown table output
-                -n         do not try to wrap if too wide for the terminal
+                -n         no-wrap - do not try to wrap if too wide for the terminal
                 -q         quiet - don't print error messages
                 -r         rotate table output
                 -t         truncate data if too wide for the terminal
                 -v         version info
-                -h         help
     '''))
 
 
@@ -307,6 +308,7 @@ def main():
     csv = 'c' in options
     html = 'H' in options
     markdown = 'm' in options
+    fancy_grid = 'f' in options
     nowrap = 'n' in options
     quiet = 'q' in options
     rotate = 'r' in options
@@ -318,6 +320,8 @@ def main():
         tbl_fmt = 'github'
     elif html:
         tbl_fmt = 'html'
+    elif fancy_grid:
+        tbl_fmt = 'fancy_grid'
     else:
         tbl_fmt = 'simple'
 
