@@ -7,7 +7,7 @@ import json
 import tabulate
 import shutil
 
-__version__ = '1.5.2'
+__version__ = '1.5.3'
 SUCCESS, ERROR = True, False
 
 
@@ -32,15 +32,15 @@ def helptext():
 
                 --cols=n   manually configure the terminal width
                 -c         CSV table output
+                -f         fancy table output
+                -h         help
                 -H         HTML table output
                 -m         markdown table output
-                -f         fancy table output
-                -n         do not try to wrap if too wide for the terminal
+                -n         no-wrap - do not try to wrap if too wide for the terminal
                 -q         quiet - don't print error messages
                 -r         rotate table output
                 -t         truncate data if too wide for the terminal
                 -v         version info
-                -h         help
     '''))
 
 

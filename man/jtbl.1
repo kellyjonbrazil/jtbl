@@ -1,4 +1,4 @@
-.TH jtbl 1 2023-02-28 1.5.1 "JTBL - JSON tables in the terminal"
+.TH jtbl 1 2023-10-22 1.5.3 "JTBL - JSON tables in the terminal"
 .SH NAME
 jtbl \- Print JSON and JSON Lines data as a table in the terminal
 .SH SYNOPSIS
@@ -22,11 +22,15 @@ cat data.json | jtbl [OPTIONS]
 
 \fB-c\fP CSV table output
 
+\fB-h\fP help
+
+\fB-f\fP fancy table output
+
 \fB-H\fP HTML table output
 
 \fB-m\fP markdown table output
 
-\fB-n\fP do not try to wrap if too wide for the terminal
+\fB-n\fP no-wrap - do not try to wrap if too wide for the terminal
 
 \fB-q\fP quiet - don't print error messages
 
