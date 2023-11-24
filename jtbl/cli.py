@@ -13,15 +13,15 @@ SUCCESS, ERROR = True, False
 # START add DokuWiki table format
 dokuwiki_format = {
     "dokuwiki": tabulate.TableFormat(
-            lineabove=tabulate.Line("|", "-", "|", "|"),
-            linebelowheader=tabulate.Line("|", "-", "|", "|"),
-            linebetweenrows=None,
-            linebelow=None,
-            headerrow=tabulate.DataRow("^", "^", "^"),
-            datarow=tabulate.DataRow("|", "|", "|"),
-            padding=1,
-            with_header_hide=["lineabove", "linebelowheader"],
-        )
+        lineabove=tabulate.Line("|", "-", "|", "|"),
+        linebelowheader=tabulate.Line("|", "-", "|", "|"),
+        linebetweenrows=None,
+        linebelow=None,
+        headerrow=tabulate.DataRow("^", "^", "^"),
+        datarow=tabulate.DataRow("|", "|", "|"),
+        padding=1,
+        with_header_hide=["lineabove", "linebelowheader"],
+    )
 }
 tabulate._table_formats.update(dokuwiki_format)  # type: ignore
 # END add DokuWiki table format
