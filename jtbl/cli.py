@@ -20,7 +20,7 @@ dokuwiki_format = {
             headerrow=tabulate.DataRow("^", "^", "^"),
             datarow=tabulate.DataRow("|", "|", "|"),
             padding=1,
-            with_header_hide=["lineabove"],
+            with_header_hide=["lineabove", "linebelowheader"],
         )
 }
 tabulate._table_formats.update(dokuwiki_format)  # type: ignore
