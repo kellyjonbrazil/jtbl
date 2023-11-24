@@ -10,9 +10,9 @@ import shutil
 __version__ = '1.6.0'
 SUCCESS, ERROR = True, False
 
-# START add DocuWiki table format
-docuwiki_format = {
-    "docuwiki": tabulate.TableFormat(
+# START add DokuWiki table format
+dokuwiki_format = {
+    "dokuwiki": tabulate.TableFormat(
             lineabove=tabulate.Line("|", "-", "|", "|"),
             linebelowheader=tabulate.Line("|", "-", "|", "|"),
             linebetweenrows=None,
@@ -23,8 +23,8 @@ docuwiki_format = {
             with_header_hide=["lineabove"],
         )
 }
-tabulate._table_formats.update(docuwiki_format)  # type: ignore
-# END add DocuWiki table format
+tabulate._table_formats.update(dokuwiki_format)  # type: ignore
+# END add DokuWiki table format
 
 def ctrlc(signum, frame):
     """exit with error on SIGINT"""
@@ -47,7 +47,7 @@ def helptext():
 
                 --cols=n           manually configure the terminal width
                 -c, --csv          CSV table output
-                -d, --docuwiki     DocuWiki table output
+                -d, --dokuwiki     DokuWiki table output
                 -f, --fancy        fancy table output
                 -h, --help         help
                 -H, --html         HTML table output
@@ -322,7 +322,7 @@ def main():
                 long_options[arg[2:]] = None
 
     csv = 'c' in options or 'csv' in long_options
-    docuwiki = 'd' in options or 'docuwiki' in long_options
+    dokuwiki = 'd' in options or 'dokuwiki' in long_options
     html = 'H' in options or 'html' in long_options
     markdown = 'm' in options or 'markdown' in long_options
     fancy_grid = 'f' in options or 'fancy' in long_options
@@ -335,8 +335,8 @@ def main():
 
     if markdown:
         tbl_fmt = 'github'
-    elif docuwiki:
-        tbl_fmt = 'docuwiki'
+    elif dokuwiki:
+        tbl_fmt = 'dokuwiki'
     elif html:
         tbl_fmt = 'html'
     elif fancy_grid:
@@ -344,7 +344,7 @@ def main():
     else:
         tbl_fmt = 'simple'
 
-    if not rotate and (markdown or docuwiki or html or csv):
+    if not rotate and (markdown or dokuwiki or html or csv):
         nowrap = True
 
     columns = None
