@@ -30,17 +30,17 @@ def helptext():
 
         Usage:  <JSON Data> | jtbl [OPTIONS]
 
-                --cols=n   manually configure the terminal width
-                -c         CSV table output
-                -f         fancy table output
-                -h         help
-                -H         HTML table output
-                -m         markdown table output
-                -n         no-wrap - do not try to wrap if too wide for the terminal
-                -q         quiet - don't print error messages
-                -r         rotate table output
-                -t         truncate data if too wide for the terminal
-                -v         version info
+                --cols=n           manually configure the terminal width
+                -c, --csv          CSV table output
+                -f, --fancy        fancy table output
+                -h, --help         help
+                -H, --html         HTML table output
+                -m, --markdown     markdown table output
+                -n, --no-wrap      do not try to wrap if too wide for the terminal
+                -q, --quiet        quiet - don't print error messages
+                -r, --rotate       rotate table output
+                -t, --truncate     truncate data if too wide for the terminal
+                -v, --version      version info
     '''))
 
 
@@ -299,22 +299,22 @@ def main():
             options.extend(arg[1:])
 
         if arg.startswith('--'):
-            try:
+            if '=' in arg:
                 k, v = arg[2:].split('=')
                 long_options[k] = int(v)
-            except Exception:
-                helptext()
+            else:
+                long_options[arg[2:]] = None
 
-    csv = 'c' in options
-    html = 'H' in options
-    markdown = 'm' in options
-    fancy_grid = 'f' in options
-    nowrap = 'n' in options
-    quiet = 'q' in options
-    rotate = 'r' in options
-    truncate = 't' in options
-    version_info = 'v' in options
-    helpme = 'h' in options
+    csv = 'c' in options or 'csv' in long_options
+    html = 'H' in options or 'html' in long_options
+    markdown = 'm' in options or 'markdown' in long_options
+    fancy_grid = 'f' in options or 'fancy' in long_options
+    nowrap = 'n' in options or 'no-wrap' in long_options
+    quiet = 'q' in options or 'quiet' in long_options
+    rotate = 'r' in options or 'rotate' in long_options
+    truncate = 't' in options or 'truncate' in long_options
+    version_info = 'v' in options or 'version' in long_options
+    helpme = 'h' in options or 'help' in long_options
 
     if markdown:
         tbl_fmt = 'github'
