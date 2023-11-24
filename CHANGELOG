@@ -1,5 +1,10 @@
 jtbl changelog
 
+20231124 v1.6.0
+- Add long options
+- Add DocuWiki table option
+- Add Bash and Zsh completions
+
 20231022 v1.5.3
 - Add `-f` option for fancy table output
 
