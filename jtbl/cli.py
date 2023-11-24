@@ -316,8 +316,11 @@ def main():
 
         if arg.startswith('--'):
             if '=' in arg:
-                k, v = arg[2:].split('=')
-                long_options[k] = int(v)
+                try:
+                    k, v = arg[2:].split('=')
+                    long_options[k] = int(v)
+                except Exception:
+                    helptext()
             else:
                 long_options[arg[2:]] = None
 
