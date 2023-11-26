@@ -429,6 +429,30 @@ class MyTests(unittest.TestCase):
         self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns, nowrap=True, table_format='github'), (self.SUCCESS, expected))
 
 
+    def test_dokuwiki(self):
+        """test DokuWiki markdown output"""
+        stdin = [
+            {
+                "column1": "data",
+                "column2": 123,
+                "column3": True,
+                "column4": None
+            },
+            {
+                "column1": "This is a long string that should not be truncated by the markdown table format. Lines should not be wrapped for markdown.",
+                "column2": 123,
+                "column3": True,
+                "column4": None
+            }
+        ]
+
+        expected = textwrap.dedent('''\
+        ^ column1                                                                                                                    ^   column2 ^ column3   ^ column4   ^
+        | data                                                                                                                       |       123 | True      |           |
+        | This is a long string that should not be truncated by the markdown table format. Lines should not be wrapped for markdown. |       123 | True      |           |''')
+        self.assertEqual(jtbl.cli.make_table(data=stdin, columns=self.columns, nowrap=True, table_format='dokuwiki'), (self.SUCCESS, expected))
+
+
     def test_add_remove_fields(self):
         """test with added and missing fields"""
         stdin = [{"foo this is a very long long key":"this is a very very long string yes it is"},{"foo this is a very long long key":"medium length string","bar this is another very long string":"now is the time for all good men to come to the aide of their party"},{"baz is yet another long key name":"hello there how are you doing today? I am fine, thank you.","bar this is another very long string":"short string"}]
